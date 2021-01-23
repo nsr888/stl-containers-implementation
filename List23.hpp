@@ -8,10 +8,7 @@ namespace ft
     template<typename T>
     class _List_node {
     public:
-        _List_node<T>() {
-            this->_M_data = new T;
-            this->_M_next = this->_M_prev = this;
-        }
+        _List_node<T>(): _M_data(0), _M_next(0), _M_prev(0) {}
         _List_node<T>(T data, _List_node<T>* next, _List_node<T>* prev)
             : _M_data(new T(data))
             , _M_next(next)
@@ -27,6 +24,10 @@ namespace ft
         T& getData() const { return *_M_data; }
         _List_node* getNext() const { return _M_next; }
         _List_node* getPrev() const { return _M_prev; }
+        void setNext(_List_node<T> other) {
+            _M_next = &other;
+            return;
+        }
         _List_node & operator=(const _List_node & other) {
             if (this == &other)
                 return *this;
@@ -35,12 +36,7 @@ namespace ft
             this->_M_prev = other.getPrev();
             return *this;
         }
-        void _M_hook(_List_node* const __position) {
-            this->_M_next = __position;
-            this->_M_prev = __position->_M_prev;
-            __position->_M_prev->_M_next = this;
-            __position->_M_prev = this;
-        }
+
     private:
         T* _M_data;
         _List_node<T>* _M_next;
@@ -56,8 +52,8 @@ namespace ft
         
     public:
         _List_iterator() : _M_node() {}
-        explicit _List_iterator<T>(const iterator & it) : _M_node(it.getNode()) {}
-        explicit _List_iterator<T>(ft::_List_node<T> other) : _M_node(other) {}
+        /* explicit _List_iterator<T>(const iterator & it) : _M_node(it.getNode()) {} */
+        /* explicit _List_iterator<T>(_Node __x) : _M_node(__x) {} */
         ~_List_iterator() {}
         void _M_incr() { _M_node = _M_node->_M_next; }
         void _M_decr() { _M_node = _M_node->_M_prev; }
@@ -99,13 +95,11 @@ namespace ft
 
     };
 
-    /* template<typename T, typename _Alloc = std::allocator<T> > */
-    template<typename T>
+    template<class T>
     class List {
     public:
-        typedef ft::_List_iterator<T>               iterator;
-        typedef ft::_List_node<T>                   _Node;
-        /* typedef _Alloc                              allocator_type; */
+        /* typedef ft::_List_iterator<T>               iterator; */
+        /* typedef ft::_List_node<T>                   _Node; */
 
         List<T>() {
             this->_M_node = new _List_node<T>();
@@ -119,50 +113,47 @@ namespace ft
         };
         List(const List & other);
         List & operator=(const List & other);
-        void _M_inc_size(size_t __n) { _M_size += __n; }
-        iterator begin() { 
-            return iterator(this->_M_node->_M_next);
-        }
-        iterator end() {
-            return iterator(this->_M_node);
-        }
-        size_t max_size() const { return size_t(-1); }
-        bool empty() const { return _M_node->_M_next == _M_node; }
-        size_t size() const { 
-            iterator ptr(begin());
-            int n = 0;
-            while(ptr != end())
-            {
-                ++ptr;
-                ++n;
-            }
-            return n; 
-        }
+        /* iterator begin() { */ 
+        /*     return iterator(this->_M_next); */
+        /* } */
+        /* iterator end() { */
+        /*     _Node tmp(_M_node); */
+        /*     while(tmp) */
+        /*         tmp = tmp.getNext(); */
+        /*     return iterator(tmp); */
+        /* } */
+        /* size_t max_size() const { return size_t(-1); } */
+        /* bool empty() const { return _M_node->_M_next == _M_node; } */
+        /* size_t size() const { */ 
+        /*     iterator ptr(begin()); */
+        /*     int n = 0; */
+        /*     while(ptr != end()) */
+        /*     { */
+        /*         ++ptr; */
+        /*         ++n; */
+        /*     } */
+        /*     return n; */ 
+        /* } */
         T& front() {
-            return *begin();
+            _List_node<T>* tmp = _M_node;
+            while (_M_node->getNext())
+            {
+                std::cout << 1 << std::endl;
+                _M_node = _M_node->getNext();
+            }
+            T& data = _M_node->getData();
+            _M_node = tmp;
+            return data;
         }
         T& back() {
-            iterator __tmp = end();
-            --__tmp;
-            return *__tmp;
-        }
-        _Node* _M_create_node(const T & __x)
-        {
-          return new _List_node<T>(__x);
-        }
-        void _M_insert(iterator __position, const T & __x) {
-          _Node* __tmp = _M_create_node(__x);
-          __tmp->_M_hook(__position._M_node);
-          this->_M_inc_size(1);
+            return _M_node->getData();
         }
         void push_back(const T & val) {
-            this->_M_insert(end(), val);
-            /* _List_node<T>* tmp = _M_node; */
-            /* while (_M_node->getNext()) */
-            /*     _M_node = _M_node->getNext(); */
-            /* _M_node->setNext(_List_node<T>(val, 0, tmp)); */ 
-            /* _M_node = tmp; */
-            /* ++_M_size; */
+            _List_node<T>* tmp = _M_node;
+            while (_M_node->getNext())
+                _M_node = _M_node->getNext();
+            _M_node->setNext(_List_node<T>(val, 0, tmp)); 
+            _M_node = tmp;
         }
 
     private:

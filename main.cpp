@@ -2,16 +2,24 @@
 #include "cassert"
 
 int main() {
-    ft::List<int> empty_list;
-	{
-		std::cout << "[begin] == [end] on empty list" << '\n';
-			assert(empty_list.begin() == empty_list.end());
-		std::cout << "max_size (list) = " << empty_list.max_size() << '\n';
-		std::cout << "empty? " << empty_list.empty() << '\n';
-			assert(empty_list.empty());
-        std::cout << "empty list size = " << empty_list.size() << '\n';
-			assert(empty_list.size() == 0);
-	}
+    ft::List<int> lst;
+    {
+        lst.push_back(77);
+        std::cout << "mylist.front() is now " << lst.front() << '\n';
+        lst.push_back(22);
+        lst.front() -= lst.back();
+        std::cout << "mylist.front() is now " << lst.front() << '\n';
+    }
+    /* ft::List<int> empty_list; */
+	/* { */
+		/* std::cout << "[begin] == [end] on empty list" << '\n'; */
+			/* assert(empty_list.begin() == empty_list.end()); */
+		/* std::cout << "max_size (list) = " << empty_list.max_size() << '\n'; */
+		/* std::cout << "empty? " << empty_list.empty() << '\n'; */
+			/* assert(empty_list.empty()); */
+    /*     std::cout << "empty list size = " << empty_list.size() << '\n'; */
+			/* assert(empty_list.size() == 0); */
+	/* } */
 
     /* ft::List<int> lst; */
 	/* lst.push_back(5); */
@@ -26,4 +34,5 @@ int main() {
 			/* assert(lst.back() == 42); */
 			/* assert(*--lst.end() == 42); */
 	/* } */
+    return 0;
 }
