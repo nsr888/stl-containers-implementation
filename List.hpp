@@ -24,6 +24,11 @@ namespace ft
             *this = other;
             return;
         }
+        _List_node<T>(const T & other)
+        {
+            this->_M_data = new T(other);
+            this->_M_next = this->_M_prev = this;
+        }
         T& getData() const { return *_M_data; }
         _List_node* getNext() const { return _M_next; }
         _List_node* getPrev() const { return _M_prev; }
@@ -35,9 +40,10 @@ namespace ft
             this->_M_prev = other.getPrev();
             return *this;
         }
+        /* insert this node before __position node */
         void _M_hook(_List_node* const __position) {
             this->_M_next = __position;
-            this->_M_prev = __position->_M_prev;
+            this->_M_prev = __position->getPrev();
             __position->_M_prev->_M_next = this;
             __position->_M_prev = this;
         }
@@ -56,11 +62,11 @@ namespace ft
         
     public:
         _List_iterator() : _M_node() {}
-        explicit _List_iterator<T>(const iterator & it) : _M_node(it.getNode()) {}
-        explicit _List_iterator<T>(ft::_List_node<T> other) : _M_node(other) {}
+        _List_iterator<T>(const iterator & it) : _M_node(it.getNode()) {}
+        _List_iterator<T>(_Node* other) : _M_node(other) {}
         ~_List_iterator() {}
-        void _M_incr() { _M_node = _M_node->_M_next; }
-        void _M_decr() { _M_node = _M_node->_M_prev; }
+        void _M_incr() { _M_node = _M_node->getNext(); }
+        void _M_decr() { _M_node = _M_node->getPrev(); }
         
         bool operator==(const _List_iterator & other) const {
           return _M_node == other._M_node;
@@ -69,10 +75,10 @@ namespace ft
           return _M_node != other._M_node;
         }
         T & operator*() const { 
-            return *static_cast<_Node*>(_M_node)->_M_data; 
+            return _M_node->getData(); 
         }
         T * operator->() const {
-            return static_cast<_Node*>(_M_node)->_M_data;
+            return _M_node->getData();
         }
         _Self & operator++() { 
           this->_M_incr();
@@ -121,7 +127,7 @@ namespace ft
         List & operator=(const List & other);
         void _M_inc_size(size_t __n) { _M_size += __n; }
         iterator begin() { 
-            return iterator(this->_M_node->_M_next);
+            return iterator(this->_M_node->getNext());
         }
         iterator end() {
             return iterator(this->_M_node);
@@ -142,27 +148,21 @@ namespace ft
             return *begin();
         }
         T& back() {
-            iterator __tmp = end();
-            --__tmp;
-            return *__tmp;
+            iterator tmp = end();
+            --tmp;
+            return *tmp;
         }
         _Node* _M_create_node(const T & __x)
         {
           return new _List_node<T>(__x);
         }
         void _M_insert(iterator __position, const T & __x) {
-          _Node* __tmp = _M_create_node(__x);
-          __tmp->_M_hook(__position._M_node);
+          _Node* tmp = _M_create_node(__x);
+          tmp->_M_hook(__position.getNode());
           this->_M_inc_size(1);
         }
         void push_back(const T & val) {
             this->_M_insert(end(), val);
-            /* _List_node<T>* tmp = _M_node; */
-            /* while (_M_node->getNext()) */
-            /*     _M_node = _M_node->getNext(); */
-            /* _M_node->setNext(_List_node<T>(val, 0, tmp)); */ 
-            /* _M_node = tmp; */
-            /* ++_M_size; */
         }
 
     private:

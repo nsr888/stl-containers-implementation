@@ -1,0 +1,277 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+LIST_HPP	List.hpp	/^# define LIST_HPP$/;"	d
+LIST_HPP	List23.hpp	/^# define LIST_HPP$/;"	d
+LIST_HPP	List_long.hpp	/^# define LIST_HPP$/;"	d
+List	List.hpp	/^        List<T>() {$/;"	f	class:ft::List
+List	List.hpp	/^    class List {$/;"	c	namespace:ft
+List	List23.hpp	/^        List<T>() {$/;"	f	class:ft::List
+List	List23.hpp	/^    class List {$/;"	c	namespace:ft
+List	List_long.hpp	/^        List<T>() {};$/;"	f	class:ft::List
+List	List_long.hpp	/^    class List {$/;"	c	namespace:ft
+_Base	List_.hpp	/^      typedef _List_base<_Tp>			_Base;$/;"	t	class:ft::list
+_GLIBCXX_LIST_REMOVE_RETURN_TYPE_TAG	std_list.cpp	/^# define _GLIBCXX_LIST_REMOVE_RETURN_TYPE_TAG /;"	d	file:
+_GLIBCXX_LIST_REMOVE_RETURN_TYPE_TAG	std_list.cpp	/^#undef _GLIBCXX_LIST_REMOVE_RETURN_TYPE_TAG$/;"	d	file:
+_GLIBCXX_VISIBILITY	std_list.cpp	/^namespace std _GLIBCXX_VISIBILITY(default)$/;"	f
+_GLIBCXX_VISIBILITY	std_utils.cpp	/^namespace std _GLIBCXX_VISIBILITY(default)$/;"	f
+_List_base	List_.hpp	/^      _List_base() { }$/;"	f	class:ft::_List_base
+_List_base	List_.hpp	/^    class _List_base {$/;"	c	namespace:ft
+_List_const_iterator	List_.hpp	/^      _List_const_iterator() $/;"	f	struct:ft::_List_const_iterator
+_List_const_iterator	List_.hpp	/^      _List_const_iterator(const __detail::_List_node_base* __x)$/;"	f	struct:ft::_List_const_iterator
+_List_const_iterator	List_.hpp	/^      _List_const_iterator(const iterator& __x) $/;"	f	struct:ft::_List_const_iterator
+_List_const_iterator	List_.hpp	/^    struct _List_const_iterator$/;"	s	namespace:ft
+_List_impl	List_.hpp	/^      struct _List_impl$/;"	s	class:ft::_List_base
+_List_iterator	List.hpp	/^        _List_iterator() : _M_node() {}$/;"	f	class:ft::_List_iterator
+_List_iterator	List.hpp	/^        _List_iterator<T>(_Node* other) : _M_node(other) {}$/;"	f	class:ft::_List_iterator
+_List_iterator	List.hpp	/^        _List_iterator<T>(const iterator & it) : _M_node(it.getNode()) {}$/;"	f	class:ft::_List_iterator
+_List_iterator	List.hpp	/^    class _List_iterator {$/;"	c	namespace:ft
+_List_iterator	List23.hpp	/^        _List_iterator() : _M_node() {}$/;"	f	class:ft::_List_iterator
+_List_iterator	List23.hpp	/^    class _List_iterator {$/;"	c	namespace:ft
+_List_iterator	List_.hpp	/^      _List_iterator() : _M_node() { }$/;"	f	struct:ft::_List_iterator
+_List_iterator	List_.hpp	/^      _List_iterator(__detail::_List_node_base* __x)$/;"	f	struct:ft::_List_iterator
+_List_iterator	List_.hpp	/^    struct _List_iterator$/;"	s	namespace:ft
+_List_iterator	List_long.hpp	/^        _List_iterator() {}$/;"	f	struct:ft::_List_iterator
+_List_iterator	List_long.hpp	/^        _List_iterator(_Node* __x) : _List_iterator_base(__x) {}$/;"	f	struct:ft::_List_iterator
+_List_iterator	List_long.hpp	/^        _List_iterator(const iterator& __x) : _List_iterator_base(__x._M_node) {}$/;"	f	struct:ft::_List_iterator
+_List_iterator	List_long.hpp	/^    struct _List_iterator: public _List_iterator_base {$/;"	s	namespace:ft
+_List_iterator_base	List_long.hpp	/^        _List_iterator_base() {}$/;"	f	struct:ft::_List_iterator_base
+_List_iterator_base	List_long.hpp	/^        _List_iterator_base(_List_node_base* __x) : _M_node(__x) {}$/;"	f	struct:ft::_List_iterator_base
+_List_iterator_base	List_long.hpp	/^    struct _List_iterator_base {$/;"	s	namespace:ft
+_List_node	List.hpp	/^        _List_node<T>() {$/;"	f	class:ft::_List_node
+_List_node	List.hpp	/^        _List_node<T>(T data, _List_node<T>* next, _List_node<T>* prev)$/;"	f	class:ft::_List_node
+_List_node	List.hpp	/^        _List_node<T>(const T & other)$/;"	f	class:ft::_List_node
+_List_node	List.hpp	/^        _List_node<T>(const _List_node<T> & other)$/;"	f	class:ft::_List_node
+_List_node	List.hpp	/^    class _List_node {$/;"	c	namespace:ft
+_List_node	List23.hpp	/^        _List_node<T>(): _M_data(0), _M_next(0), _M_prev(0) {}$/;"	f	class:ft::_List_node
+_List_node	List23.hpp	/^        _List_node<T>(T data, _List_node<T>* next, _List_node<T>* prev)$/;"	f	class:ft::_List_node
+_List_node	List23.hpp	/^        _List_node<T>(const _List_node<T> & other)$/;"	f	class:ft::_List_node
+_List_node	List23.hpp	/^    class _List_node {$/;"	c	namespace:ft
+_List_node	List_.hpp	/^    struct _List_node : public __detail::_List_node_base$/;"	s	namespace:ft
+_List_node	List_long.hpp	/^        _List_node(): _List_node_base(), _M_data() {}$/;"	f	struct:ft::_List_node
+_List_node	List_long.hpp	/^    struct _List_node: public _List_node_base {$/;"	s	namespace:ft
+_List_node_base	List_.hpp	/^    struct _List_node_base$/;"	s	namespace:ft::__detail
+_List_node_base	List_long.hpp	/^        _List_node_base(): _M_next(0), _M_prev(0) {}$/;"	f	struct:ft::_List_node_base
+_List_node_base	List_long.hpp	/^    struct _List_node_base {$/;"	s	namespace:ft
+_List_node_header	List_.hpp	/^      _List_node_header() { _M_init(); }$/;"	f	struct:ft::__detail::_List_node_header
+_List_node_header	List_.hpp	/^    struct _List_node_header : public _List_node_base$/;"	s	namespace:ft::__detail
+_M_assign_dispatch	List_.hpp	/^	_M_assign_dispatch(_Integer __n, _Integer __val, __true_type)$/;"	f	class:ft::list
+_M_base	List_.hpp	/^      _List_node_base* _M_base() { return this; }$/;"	f	struct:ft::__detail::_List_node_header
+_M_check_equal_allocators	List_.hpp	/^      _M_check_equal_allocators(list& __x) $/;"	f	class:ft::list
+_M_const_cast	List_.hpp	/^      _M_const_cast() const $/;"	f	struct:ft::_List_const_iterator
+_M_const_cast	List_.hpp	/^      _M_const_cast() const$/;"	f	struct:ft::_List_iterator
+_M_create_node	List.hpp	/^        _Node* _M_create_node(const T & __x)$/;"	f	class:ft::List
+_M_create_node	List_.hpp	/^      _M_create_node(const value_type& __x)$/;"	f	class:ft::list
+_M_data	List.hpp	/^        T* _M_data;$/;"	m	class:ft::_List_node
+_M_data	List23.hpp	/^        T* _M_data;$/;"	m	class:ft::_List_node
+_M_data	List_.hpp	/^      _Tp _M_data;$/;"	m	struct:ft::_List_node
+_M_data	List_long.hpp	/^        T _M_data;$/;"	m	struct:ft::_List_node
+_M_dec_size	List_.hpp	/^      void _M_dec_size(size_t __n) { _M_impl._M_node._M_size -= __n; }$/;"	f	class:ft::_List_base
+_M_decr	List.hpp	/^        void _M_decr() { _M_node = _M_node->getPrev(); }$/;"	f	class:ft::_List_iterator
+_M_decr	List23.hpp	/^        void _M_decr() { _M_node = _M_node->_M_prev; }$/;"	f	class:ft::_List_iterator
+_M_decr	List_long.hpp	/^        void _M_decr() { _M_node = _M_node->_M_prev; }$/;"	f	struct:ft::_List_iterator_base
+_M_default_initialize	List_.hpp	/^      _M_default_initialize(size_type __n)$/;"	f	class:ft::list
+_M_distance	List_.hpp	/^      _M_distance(const __detail::_List_node_base* __first,$/;"	f	class:ft::_List_base
+_M_erase	List_.hpp	/^      _M_erase(iterator __position) $/;"	f	class:ft::list
+_M_fill_initialize	List_.hpp	/^      _M_fill_initialize(size_type __n, const value_type& __x)$/;"	f	class:ft::list
+_M_get_size	List_.hpp	/^      size_t _M_get_size() const { return _M_impl._M_node._M_size; }$/;"	f	class:ft::_List_base
+_M_hook	List.hpp	/^        void _M_hook(_List_node* const __position) {$/;"	f	class:ft::_List_node
+_M_impl	List_.hpp	/^      _List_impl _M_impl;$/;"	m	class:ft::_List_base
+_M_inc_size	List.hpp	/^        void _M_inc_size(size_t __n) { _M_size += __n; }$/;"	f	class:ft::List
+_M_inc_size	List_.hpp	/^      void _M_inc_size(size_t __n) { _M_impl._M_node._M_size += __n; }$/;"	f	class:ft::_List_base
+_M_incr	List.hpp	/^        void _M_incr() { _M_node = _M_node->getNext(); }$/;"	f	class:ft::_List_iterator
+_M_incr	List23.hpp	/^        void _M_incr() { _M_node = _M_node->_M_next; }$/;"	f	class:ft::_List_iterator
+_M_incr	List_long.hpp	/^        void _M_incr() { _M_node = _M_node->_M_next; }$/;"	f	struct:ft::_List_iterator_base
+_M_init	List_.hpp	/^      _M_init() $/;"	f	class:ft::_List_base
+_M_init	List_.hpp	/^      void _M_init() { this->_M_next = this->_M_prev = this; }$/;"	f	struct:ft::__detail::_List_node_header
+_M_insert	List.hpp	/^        void _M_insert(iterator __position, const T & __x) {$/;"	f	class:ft::List
+_M_insert	List_.hpp	/^       _M_insert(iterator __position, _Args&&... __args)$/;"	f	class:ft::list
+_M_insert	List_.hpp	/^      _M_insert(iterator __position, const value_type& __x)$/;"	f	class:ft::list
+_M_move_assign	List_.hpp	/^      _M_move_assign(list&& __x, false_type)$/;"	f	class:ft::list
+_M_next	List.hpp	/^        _List_node<T>* _M_next;$/;"	m	class:ft::_List_node
+_M_next	List23.hpp	/^        _List_node<T>* _M_next;$/;"	m	class:ft::_List_node
+_M_next	List_.hpp	/^      _List_node_base* _M_next;$/;"	m	struct:ft::__detail::_List_node_base
+_M_next	List_long.hpp	/^        _List_node_base* _M_next;$/;"	m	struct:ft::_List_node_base
+_M_node	List.hpp	/^        _List_node<T>* _M_node;$/;"	m	class:ft::List
+_M_node	List.hpp	/^        _List_node<T>* _M_node;$/;"	m	class:ft::_List_iterator
+_M_node	List23.hpp	/^        _List_node<T>* _M_node;$/;"	m	class:ft::List
+_M_node	List23.hpp	/^        _List_node<T>* _M_node;$/;"	m	class:ft::_List_iterator
+_M_node	List_.hpp	/^        __detail::_List_node_header _M_node;$/;"	m	struct:ft::_List_base::_List_impl
+_M_node	List_.hpp	/^      __detail::_List_node_base* _M_node;$/;"	m	struct:ft::_List_iterator
+_M_node	List_.hpp	/^      const __detail::_List_node_base* _M_node;$/;"	m	struct:ft::_List_const_iterator
+_M_node	List_long.hpp	/^        _List_node<T>* _M_node;$/;"	m	class:ft::List
+_M_node	List_long.hpp	/^        _List_node_base *_M_node;$/;"	m	struct:ft::_List_iterator_base
+_M_node_count	List_.hpp	/^      _M_node_count() const$/;"	f	class:ft::list
+_M_node_count	List_.hpp	/^      size_t _M_node_count() const { return _M_get_size(); }$/;"	f	class:ft::_List_base
+_M_prev	List.hpp	/^        _List_node<T>* _M_prev;$/;"	m	class:ft::_List_node
+_M_prev	List23.hpp	/^        _List_node<T>* _M_prev;$/;"	m	class:ft::_List_node
+_M_prev	List_.hpp	/^      _List_node_base* _M_prev;$/;"	m	struct:ft::__detail::_List_node_base
+_M_prev	List_long.hpp	/^        _List_node_base* _M_prev;$/;"	m	struct:ft::_List_node_base
+_M_set_size	List_.hpp	/^      void _M_set_size(size_t __n) { _M_impl._M_node._M_size = __n; }$/;"	f	class:ft::_List_base
+_M_size	List.hpp	/^        std::size_t _M_size;$/;"	m	class:ft::List
+_M_size	List23.hpp	/^        std::size_t _M_size;$/;"	m	class:ft::List
+_M_transfer	List_.hpp	/^      _M_transfer(iterator __position, iterator __first, iterator __last)$/;"	f	class:ft::list
+_Node	List.hpp	/^        typedef ft::_List_node<T>                   _Node;$/;"	t	class:ft::List
+_Node	List.hpp	/^        typedef ft::_List_node<T>           _Node;$/;"	t	class:ft::_List_iterator
+_Node	List23.hpp	/^        typedef ft::_List_node<T>           _Node;$/;"	t	class:ft::_List_iterator
+_Node	List_.hpp	/^      typedef _List_node<_Tp>				 _Node;$/;"	t	class:ft::list
+_Node	List_.hpp	/^      typedef _List_node<_Tp>			_Node;$/;"	t	struct:ft::_List_iterator
+_Node	List_.hpp	/^      typedef const _List_node<_Tp>		_Node;$/;"	t	struct:ft::_List_const_iterator
+_Node	List_long.hpp	/^        typedef _List_node<T>                   _Node;$/;"	t	class:ft::List
+_Node	List_long.hpp	/^        typedef _List_node<T>           _Node;$/;"	t	struct:ft::_List_iterator
+_STL_LIST_H	List_.hpp	/^#define _STL_LIST_H /;"	d
+_STL_LIST_H	std_list.cpp	/^#define _STL_LIST_H /;"	d	file:
+_S_distance	List_.hpp	/^      _S_distance(const __detail::_List_node_base* __first,$/;"	f	class:ft::_List_base
+_S_distance	List_.hpp	/^      _S_distance(const_iterator __first, const_iterator __last)$/;"	f	class:ft::list
+_Self	List.hpp	/^        typedef ft::_List_iterator<T>       _Self;$/;"	t	class:ft::_List_iterator
+_Self	List23.hpp	/^        typedef ft::_List_iterator<T>       _Self;$/;"	t	class:ft::_List_iterator
+_Self	List_.hpp	/^      typedef _List_const_iterator<_Tp>		_Self;$/;"	t	struct:ft::_List_const_iterator
+_Self	List_.hpp	/^      typedef _List_iterator<_Tp>		_Self;$/;"	t	struct:ft::_List_iterator
+_Self	List_long.hpp	/^        typedef _List_iterator<T>       _Self;$/;"	t	struct:ft::_List_iterator
+__cpp_lib_list_remove_return_type	std_list.cpp	/^# define __cpp_lib_list_remove_return_type /;"	d	file:
+__detail	List_.hpp	/^  namespace __detail$/;"	n	namespace:ft
+__distance	List_.hpp	/^    __distance(_GLIBCXX_STD_C::_List_const_iterator<_Tp> __first,$/;"	f	namespace:ft
+__distance	List_.hpp	/^    __distance(_GLIBCXX_STD_C::_List_iterator<_Tp> __first,$/;"	f	namespace:ft
+assign	List_.hpp	/^	assign(_InputIterator __first, _InputIterator __last)$/;"	f	class:ft::list
+assign	List_.hpp	/^      assign(size_type __n, const value_type& __val)$/;"	f	class:ft::list
+back	List.hpp	/^        T& back() {$/;"	f	class:ft::List
+back	List23.hpp	/^        T& back() {$/;"	f	class:ft::List
+back	List_.hpp	/^      back() $/;"	f	class:ft::list
+back	List_.hpp	/^      back() const $/;"	f	class:ft::list
+begin	List.hpp	/^        iterator begin() { $/;"	f	class:ft::List
+begin	List_.hpp	/^      begin() $/;"	f	class:ft::list
+begin	List_.hpp	/^      begin() const $/;"	f	class:ft::list
+begin	List_long.hpp	/^        iterator begin() const { return static_cast<_Node*>(_M_node->_M_next); }$/;"	f	class:ft::List
+clear	List_.hpp	/^      clear() $/;"	f	class:ft::list
+const_iterator	List_.hpp	/^      typedef _List_const_iterator<_Tp>			 const_iterator;$/;"	t	class:ft::list
+const_pointer	List_.hpp	/^      typedef const _Tp *	 const_pointer;$/;"	t	class:ft::list
+const_reference	List_.hpp	/^      typedef const _Tp & const_reference;$/;"	t	class:ft::list
+difference_type	List_.hpp	/^      typedef ptrdiff_t					 difference_type;$/;"	t	class:ft::list
+empty	List.hpp	/^        bool empty() const { return _M_node->_M_next == _M_node; }$/;"	f	class:ft::List
+empty	List_.hpp	/^      empty() const $/;"	f	class:ft::list
+empty	List_long.hpp	/^        bool empty() const { return _M_node->_M_next == _M_node; }$/;"	f	class:ft::List
+end	List.hpp	/^        iterator end() {$/;"	f	class:ft::List
+end	List_.hpp	/^      end() $/;"	f	class:ft::list
+end	List_.hpp	/^      end() const $/;"	f	class:ft::list
+end	List_long.hpp	/^        iterator end() const { return _M_node; }$/;"	f	class:ft::List
+erase	List_.hpp	/^      erase(iterator __first, iterator __last)$/;"	f	class:ft::list
+front	List.hpp	/^        T& front() {$/;"	f	class:ft::List
+front	List23.hpp	/^        T& front() {$/;"	f	class:ft::List
+front	List_.hpp	/^      front() $/;"	f	class:ft::list
+front	List_.hpp	/^      front() const $/;"	f	class:ft::list
+ft	List.hpp	/^namespace ft$/;"	n
+ft	List23.hpp	/^namespace ft$/;"	n
+ft	List_.hpp	/^namespace ft$/;"	n
+ft	List_long.hpp	/^namespace ft$/;"	n
+getData	List.hpp	/^        T& getData() const { return *_M_data; }$/;"	f	class:ft::_List_node
+getData	List23.hpp	/^        T& getData() const { return *_M_data; }$/;"	f	class:ft::_List_node
+getNext	List.hpp	/^        _List_node* getNext() const { return _M_next; }$/;"	f	class:ft::_List_node
+getNext	List23.hpp	/^        _List_node* getNext() const { return _M_next; }$/;"	f	class:ft::_List_node
+getNode	List.hpp	/^        _List_node<T>* getNode() const { return _M_node; }$/;"	f	class:ft::_List_iterator
+getNode	List23.hpp	/^        _List_node<T>* getNode() const { return _M_node; }$/;"	f	class:ft::_List_iterator
+getPrev	List.hpp	/^        _List_node* getPrev() const { return _M_prev; }$/;"	f	class:ft::_List_node
+getPrev	List23.hpp	/^        _List_node* getPrev() const { return _M_prev; }$/;"	f	class:ft::_List_node
+insert	List_.hpp	/^	insert(iterator __position, _InputIterator __first,$/;"	f	class:ft::list
+insert	List_.hpp	/^      insert(iterator __position, size_type __n, const value_type& __x)$/;"	f	class:ft::list
+iterator	List.hpp	/^        typedef ft::_List_iterator<T>               iterator;$/;"	t	class:ft::List
+iterator	List.hpp	/^        typedef ft::_List_iterator<T>       iterator;$/;"	t	class:ft::_List_iterator
+iterator	List23.hpp	/^        typedef ft::_List_iterator<T>       iterator;$/;"	t	class:ft::_List_iterator
+iterator	List_.hpp	/^      typedef _List_iterator<_Tp>			 iterator;$/;"	t	class:ft::list
+iterator	List_.hpp	/^      typedef _List_iterator<_Tp>		iterator;$/;"	t	struct:ft::_List_const_iterator
+iterator	List_long.hpp	/^        typedef _List_iterator<T>               iterator;$/;"	t	class:ft::List
+iterator	List_long.hpp	/^        typedef _List_iterator<T>       iterator;$/;"	t	struct:ft::_List_iterator
+list	List_.hpp	/^	list(_InputIterator __first, _InputIterator __last)$/;"	f	class:ft::list
+list	List_.hpp	/^      -> list<_ValT, _Allocator>;$/;"	m	namespace:ft
+list	List_.hpp	/^      list() { }$/;"	f	class:ft::list
+list	List_.hpp	/^      list(size_type __n, const value_type& __value = value_type())$/;"	f	class:ft::list
+list	List_.hpp	/^    class list : protected _List_base<_Tp>$/;"	c	namespace:ft
+main	main.cpp	/^int main() {$/;"	f
+max_size	List.hpp	/^        size_t max_size() const { return size_t(-1); }$/;"	f	class:ft::List
+max_size	List_.hpp	/^      max_size() const $/;"	f	class:ft::list
+max_size	List_long.hpp	/^        size_t max_size() const { return size_t(-1); }$/;"	f	class:ft::List
+noexcept	List_.hpp	/^    _IF(noexcept(__x.swap(__y)))$/;"	f	namespace:ft
+operator !=	List.hpp	/^        bool operator!=(const _List_iterator & other) const {$/;"	f	class:ft::_List_iterator
+operator !=	List23.hpp	/^        bool operator!=(const _List_iterator & other) const {$/;"	f	class:ft::_List_iterator
+operator !=	List_.hpp	/^      operator!=(const _Self& __x, const _Self& __y) $/;"	f	struct:ft::_List_const_iterator
+operator !=	List_.hpp	/^      operator!=(const _Self& __x, const _Self& __y)$/;"	f	struct:ft::_List_iterator
+operator !=	List_.hpp	/^    operator!=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)$/;"	f	namespace:ft
+operator !=	List_long.hpp	/^        bool operator!=(const _List_iterator_base& __x) const {$/;"	f	struct:ft::_List_iterator_base
+operator *	List.hpp	/^        T & operator*() const { $/;"	f	class:ft::_List_iterator
+operator *	List23.hpp	/^        T & operator*() const { $/;"	f	class:ft::_List_iterator
+operator *	List_.hpp	/^      operator*() const $/;"	f	struct:ft::_List_const_iterator
+operator *	List_.hpp	/^      operator*() const$/;"	f	struct:ft::_List_iterator
+operator *	List_long.hpp	/^        T& operator*() const {return *static_cast<_Node*>(_M_node)->_M_data; }$/;"	f	struct:ft::_List_iterator
+operator ++	List.hpp	/^        _Self & operator++() { $/;"	f	class:ft::_List_iterator
+operator ++	List.hpp	/^        _Self operator++(int) { $/;"	f	class:ft::_List_iterator
+operator ++	List23.hpp	/^        _Self & operator++() { $/;"	f	class:ft::_List_iterator
+operator ++	List23.hpp	/^        _Self operator++(int) { $/;"	f	class:ft::_List_iterator
+operator ++	List_.hpp	/^      operator++() $/;"	f	struct:ft::_List_const_iterator
+operator ++	List_.hpp	/^      operator++()$/;"	f	struct:ft::_List_iterator
+operator ++	List_.hpp	/^      operator++(int) $/;"	f	struct:ft::_List_const_iterator
+operator ++	List_.hpp	/^      operator++(int)$/;"	f	struct:ft::_List_iterator
+operator ++	List_long.hpp	/^        _Self operator++(int) { $/;"	f	struct:ft::_List_iterator
+operator ++	List_long.hpp	/^        _Self& operator++() { $/;"	f	struct:ft::_List_iterator
+operator --	List.hpp	/^        _Self & operator--() { $/;"	f	class:ft::_List_iterator
+operator --	List.hpp	/^        _Self operator--(int) { $/;"	f	class:ft::_List_iterator
+operator --	List23.hpp	/^        _Self & operator--() { $/;"	f	class:ft::_List_iterator
+operator --	List23.hpp	/^        _Self operator--(int) { $/;"	f	class:ft::_List_iterator
+operator --	List_.hpp	/^      operator--() $/;"	f	struct:ft::_List_const_iterator
+operator --	List_.hpp	/^      operator--()$/;"	f	struct:ft::_List_iterator
+operator --	List_.hpp	/^      operator--(int) $/;"	f	struct:ft::_List_const_iterator
+operator --	List_.hpp	/^      operator--(int)$/;"	f	struct:ft::_List_iterator
+operator --	List_long.hpp	/^        _Self operator--(int) { $/;"	f	struct:ft::_List_iterator
+operator --	List_long.hpp	/^        _Self& operator--() { $/;"	f	struct:ft::_List_iterator
+operator ->	List.hpp	/^        T * operator->() const {$/;"	f	class:ft::_List_iterator
+operator ->	List23.hpp	/^        T * operator->() const {$/;"	f	class:ft::_List_iterator
+operator ->	List_.hpp	/^      operator->() const $/;"	f	struct:ft::_List_const_iterator
+operator ->	List_.hpp	/^      operator->() const$/;"	f	struct:ft::_List_iterator
+operator ->	List_long.hpp	/^        T* operator->() const { return static_cast<_Node*>(_M_node)->_M_data; }$/;"	f	struct:ft::_List_iterator
+operator <	List_.hpp	/^    operator<(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)$/;"	f	namespace:ft
+operator <=	List_.hpp	/^    operator<=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)$/;"	f	namespace:ft
+operator <=>	List_.hpp	/^    operator<=>(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)$/;"	f	namespace:ft
+operator =	List.hpp	/^        _List_node & operator=(const _List_node & other) {$/;"	f	class:ft::_List_node
+operator =	List23.hpp	/^        _List_node & operator=(const _List_node & other) {$/;"	f	class:ft::_List_node
+operator ==	List.hpp	/^        bool operator==(const _List_iterator & other) const {$/;"	f	class:ft::_List_iterator
+operator ==	List23.hpp	/^        bool operator==(const _List_iterator & other) const {$/;"	f	class:ft::_List_iterator
+operator ==	List_.hpp	/^      operator==(const _Self& __x, const _Self& __y) $/;"	f	struct:ft::_List_const_iterator
+operator ==	List_.hpp	/^      operator==(const _Self& __x, const _Self& __y)$/;"	f	struct:ft::_List_iterator
+operator ==	List_.hpp	/^    operator==(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)$/;"	f	namespace:ft
+operator ==	List_long.hpp	/^        bool operator==(const _List_iterator_base& __x) const {$/;"	f	struct:ft::_List_iterator_base
+operator >	List_.hpp	/^    operator>(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)$/;"	f	namespace:ft
+operator >=	List_.hpp	/^    operator>=(const list<_Tp, _Alloc>& __x, const list<_Tp, _Alloc>& __y)$/;"	f	namespace:ft
+pointer	List_.hpp	/^      typedef _Tp *	 pointer;$/;"	t	class:ft::list
+pointer	List_.hpp	/^      typedef _Tp*				pointer;$/;"	t	struct:ft::_List_iterator
+pointer	List_.hpp	/^      typedef const _Tp*			pointer;$/;"	t	struct:ft::_List_const_iterator
+pop_back	List_.hpp	/^      pop_back() $/;"	f	class:ft::list
+pop_front	List_.hpp	/^      pop_front() $/;"	f	class:ft::list
+push_back	List.hpp	/^        void push_back(const T & val) {$/;"	f	class:ft::List
+push_back	List23.hpp	/^        void push_back(const T & val) {$/;"	f	class:ft::List
+push_back	List_.hpp	/^      push_back(const value_type& __x)$/;"	f	class:ft::list
+push_front	List_.hpp	/^      push_front(const value_type& __x)$/;"	f	class:ft::list
+reference	List_.hpp	/^      typedef _Tp &	 reference;$/;"	t	class:ft::list
+reference	List_.hpp	/^      typedef _Tp&				reference;$/;"	t	struct:ft::_List_iterator
+reference	List_.hpp	/^      typedef const _Tp&			reference;$/;"	t	struct:ft::_List_const_iterator
+reverse	List_.hpp	/^      reverse() $/;"	f	class:ft::list
+setNext	List23.hpp	/^        void setNext(_List_node<T> other) {$/;"	f	class:ft::_List_node
+size	List.hpp	/^        size_t size() const { $/;"	f	class:ft::List
+size	List_.hpp	/^      size() const $/;"	f	class:ft::list
+size	List_long.hpp	/^        size_t size() const { $/;"	f	class:ft::List
+size_type	List_.hpp	/^      typedef size_t					 size_type;$/;"	t	class:ft::list
+splice	List_.hpp	/^      splice(iterator __position, list& __x)$/;"	f	class:ft::list
+splice	List_.hpp	/^      splice(iterator __position, list& __x, iterator __first,$/;"	f	class:ft::list
+splice	List_.hpp	/^      splice(iterator __position, list& __x, iterator __i)$/;"	f	class:ft::list
+swap	List_.hpp	/^      swap(list& __x) $/;"	f	class:ft::list
+value_type	List_.hpp	/^      typedef _Tp					 value_type;$/;"	t	class:ft::list
+value_type	List_.hpp	/^      typedef _Tp				value_type;$/;"	t	struct:ft::_List_const_iterator
+value_type	List_.hpp	/^      typedef _Tp				value_type;$/;"	t	struct:ft::_List_iterator
+~List	List.hpp	/^        ~List() {$/;"	f	class:ft::List
+~List	List23.hpp	/^        ~List() {$/;"	f	class:ft::List
+~List	List_long.hpp	/^        ~List() {};$/;"	f	class:ft::List
+~_List_base	List_.hpp	/^      ~_List_base() $/;"	f	class:ft::_List_base
+~_List_iterator	List.hpp	/^        ~_List_iterator() {}$/;"	f	class:ft::_List_iterator
+~_List_iterator	List23.hpp	/^        ~_List_iterator() {}$/;"	f	class:ft::_List_iterator
+~_List_node	List.hpp	/^        ~_List_node() {$/;"	f	class:ft::_List_node
+~_List_node	List23.hpp	/^        ~_List_node() {$/;"	f	class:ft::_List_node
