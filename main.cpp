@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include <list>
+#include <iterator>
 #include "List.hpp"
 
 // a predicate implemented as a function:
@@ -61,11 +62,11 @@ TEST_CASE("List", "[list]")
             ft::List<int> fourth_impl(second_impl);
             REQUIRE( fourth_impl.front() == fourth.front() );
         }
-        /* SECTION("fifth test of constructor") { */
-        /*     std::list<int> fifth (myints, myints + sizeof(myints) / sizeof(int) ); */
-        /*     ft::List<int> fifth_impl (myints, myints + sizeof(myints) / sizeof(int) ); */
-        /*     REQUIRE( fifth_impl.front() == fifth.front() ); */
-        /* } */
+        SECTION("fifth test of constructor") {
+            std::list<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+            ft::List<int> fifth_impl (myints, myints + sizeof(myints) / sizeof(int) );
+            REQUIRE( fifth_impl.front() == fifth.front() );
+        }
     }
     /* SECTION("list operator=") { */
     /*     std::list<int> first (3);      // list of 3 zero-initialized ints */
@@ -285,41 +286,41 @@ TEST_CASE("List", "[list]")
     /*             ++it_impl; */
     /*         } */
     /*     } */
-    /*     SECTION("erase") { */
-    /*         std::list<int> mylist; */
-    /*         std::list<int>::iterator it1,it2; */
-    /*         for (int i=1; i<10; ++i) mylist.push_back(i*10); */
-    /*                                     // 10 20 30 40 50 60 70 80 90 */
-    /*         it1 = it2 = mylist.begin(); // ^^ */
-    /*         advance (it2,6);            // ^                 ^ */
-    /*         ++it1;                      //    ^              ^ */
-    /*         it1 = mylist.erase (it1);   // 10 30 40 50 60 70 80 90 */
-    /*                                     //    ^           ^ */
-    /*         it2 = mylist.erase (it2);   // 10 30 40 50 60 80 90 */
-    /*                                     //    ^           ^ */
-    /*         ++it1;                      //       ^        ^ */
-    /*         --it2;                      //       ^     ^ */
-    /*         mylist.erase (it1,it2);     // 10 30 60 80 90 */
-    /*                                     //        ^ */
-    /*         ft::List<int> mylist_impl; */
-    /*         ft::List<int>::iterator it1_impl,it2_impl; */
-    /*         for (int i=1; i<10; ++i) mylist_impl.push_back(i*10); */
-    /*                                     // 10 20 30 40 50 60 70 80 90 */
-    /*         it1_impl = it2_impl = mylist_impl.begin(); // ^^ */
-    /*         advance (it2_impl,6);            // ^                 ^ */
-    /*         ++it1_impl;                      //    ^              ^ */
-    /*         it1_impl = mylist_impl.erase (it1_impl);   // 10 30 40 50 60 70 80 90 */
-    /*         it2_impl = mylist_impl.erase (it2_impl);   // 10 30 40 50 60 80 90 */
-    /*         ++it1_impl;                      //       ^        ^ */
-    /*         --it2_impl;                      //       ^     ^ */
-    /*         mylist_impl.erase (it1_impl,it2_impl);     // 10 30 60 80 90 */
-    /*         while ( it1 != mylist.end() && it1_impl != mylist_impl.end() ) */
-    /*         { */
-    /*             REQUIRE( *it1 == *it1_impl); */
-    /*             ++it1; */
-    /*             ++it1_impl; */
-    /*         } */
-    /*     } */
+        /* SECTION("erase") { */
+        /*     std::list<int> mylist; */
+        /*     std::list<int>::iterator it1,it2; */
+        /*     for (int i=1; i<10; ++i) mylist.push_back(i*10); */
+        /*                                 // 10 20 30 40 50 60 70 80 90 */
+        /*     it1 = it2 = mylist.begin(); // ^^ */
+        /*     advance (it2,6);            // ^                 ^ */
+        /*     ++it1;                      //    ^              ^ */
+        /*     it1 = mylist.erase (it1);   // 10 30 40 50 60 70 80 90 */
+        /*                                 //    ^           ^ */
+        /*     it2 = mylist.erase (it2);   // 10 30 40 50 60 80 90 */
+        /*                                 //    ^           ^ */
+        /*     ++it1;                      //       ^        ^ */
+        /*     --it2;                      //       ^     ^ */
+        /*     mylist.erase (it1,it2);     // 10 30 60 80 90 */
+        /*                                 //        ^ */
+        /*     ft::List<int> mylist_impl; */
+        /*     ft::List<int>::iterator it1_impl,it2_impl; */
+        /*     for (int i=1; i<10; ++i) mylist_impl.push_back(i*10); */
+        /*                                 // 10 20 30 40 50 60 70 80 90 */
+        /*     it1_impl = it2_impl = mylist_impl.begin(); // ^^ */
+        /*     /1* std::advance(it2_impl,6);            // ^                 ^ *1/ */
+        /*     ++it1_impl;                      //    ^              ^ */
+        /*     it1_impl = mylist_impl.erase (it1_impl);   // 10 30 40 50 60 70 80 90 */
+        /*     it2_impl = mylist_impl.erase (it2_impl);   // 10 30 40 50 60 80 90 */
+        /*     ++it1_impl;                      //       ^        ^ */
+        /*     --it2_impl;                      //       ^     ^ */
+        /*     mylist_impl.erase (it1_impl,it2_impl);     // 10 30 60 80 90 */
+        /*     while ( it1 != mylist.end() && it1_impl != mylist_impl.end() ) */
+        /*     { */
+        /*         REQUIRE( *it1 == *it1_impl); */
+        /*         ++it1; */
+        /*         ++it1_impl; */
+        /*     } */
+        /* } */
     /*     SECTION("swap") { */
     /*         std::list<int> first (3,100);   // three ints with a value of 100 */
     /*         std::list<int> second (5,200);  // five ints with a value of 200 */
