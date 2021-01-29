@@ -6,30 +6,31 @@
 namespace ft
 {
     template<typename T, typename _Alloc = std::allocator<T> >
-    class _List_node {
+    class List_node {
     public:
-        _List_node<T>() {
+        List_node<T>() {
             /* this->_M_data = new T; */
             this->_M_data = _myalloc.allocate(1);
             _myalloc.construct(_M_data, T());
             this->_M_next = this->_M_prev = this;
         }
-        _List_node<T>(T data, _List_node<T>* next, _List_node<T>* prev) {
+        List_node<T>(T data, List_node<T>* next, List_node<T>* prev) {
+            /* this->_M_data = new T(data); */
             this->_M_data = _myalloc.allocate(1);
             _myalloc.construct(_M_data, data);
             _M_next = next;
             _M_prev = prev;
         }
-        ~_List_node() {
+        ~List_node() {
             _myalloc.deallocate(_M_data, 1);
             /* delete _M_data; */
         }
-        _List_node<T>(const _List_node<T> & other)
+        List_node<T>(const List_node<T> & other)
         {
             *this = other;
             return;
         }
-        _List_node<T>(const T & other)
+        List_node<T>(const T & other)
         {
             /* this->_M_data = new T(other); */
             this->_M_data = _myalloc.allocate(1);
@@ -37,9 +38,9 @@ namespace ft
             this->_M_next = this->_M_prev = this;
         }
         T& getData() const { return *_M_data; }
-        _List_node* getNext() const { return _M_next; }
-        _List_node* getPrev() const { return _M_prev; }
-        _List_node & operator=(const _List_node & other) {
+        List_node* getNext() const { return _M_next; }
+        List_node* getPrev() const { return _M_prev; }
+        List_node & operator=(const List_node & other) {
             if (this == &other)
                 return *this;
             this->_M_data = new T(other.getData());
@@ -48,7 +49,7 @@ namespace ft
             return *this;
         }
         /* insert this node between */
-        void _M_hook(_List_node* const __position) {
+        void _M_hook(List_node* const __position) {
             this->_M_next = __position;
             this->_M_prev = __position->getPrev();
             __position->_M_prev->_M_next = this;
@@ -56,8 +57,8 @@ namespace ft
         }
     private:
         T* _M_data;
-        _List_node<T>* _M_next;
-        _List_node<T>* _M_prev;
+        List_node<T>* _M_next;
+        List_node<T>* _M_prev;
         _Alloc _myalloc;
     };
 
@@ -65,7 +66,7 @@ namespace ft
     class _List_iterator {
     private:
         typedef ft::_List_iterator<T>       iterator;
-        typedef ft::_List_node<T>           _Node;
+        typedef ft::List_node<T>           _Node;
         typedef ft::_List_iterator<T>       _Self;
         
     public:
@@ -106,10 +107,10 @@ namespace ft
           this->_M_decr();
           return __tmp;
         }
-        _List_node<T>* getNode() const { return _M_node; }
+        List_node<T>* getNode() const { return _M_node; }
 
     private:
-        _List_node<T>* _M_node;
+        List_node<T>* _M_node;
 
     };
 
@@ -117,7 +118,7 @@ namespace ft
     class _List_const_iterator {
     private:
         typedef ft::_List_iterator<T>       iterator;
-        typedef const ft::_List_node<T>           _Node;
+        typedef const ft::List_node<T>           _Node;
         typedef ft::_List_const_iterator<T>       _Self;
         
     public:
@@ -158,10 +159,10 @@ namespace ft
           this->_M_decr();
           return __tmp;
         }
-        _List_node<T>* getNode() const { return _M_node; }
+        List_node<T>* getNode() const { return _M_node; }
 
     private:
-        const _List_node<T>* _M_node;
+        const List_node<T>* _M_node;
 
     };
 
@@ -170,36 +171,36 @@ namespace ft
     public:
         typedef ft::_List_iterator<T>               iterator;
         typedef ft::_List_const_iterator<T>         const_iterator;
-        typedef ft::_List_node<T>                   _Node;
-        typedef typename _Alloc::template rebind<ft::_List_node<T> >::other allocator;
+        typedef ft::List_node<T>                   _Node;
+        typedef typename _Alloc::template rebind<List_node<T> >::other
+            node_allocator;
 
         List<T>() {
-            this->_M_size = 0;
-            this->_M_node = _myalloc.allocate(1);
-            _myalloc.construct(_M_node, _List_node<T>());
-            /* _myalloc.construct(_M_node, _List_node<T>()); */
+            _M_size = 0;
+            _M_node = _node_alloc.allocate(1);
+            _node_alloc.construct(_M_node, 0);
             /* this->_M_node = new _List_node<T>(); */
         };
         List(const List & other) {
-            this->_M_size = 0;
-            this->_M_node = _myalloc.allocate(1);
-            _myalloc.construct(_M_node, _List_node<T>());
+            _M_size = 0;
+            _M_node = _node_alloc.allocate(1);
+            _node_alloc.construct(_M_node, 0);
             /* this->_M_node = new _List_node<T>(); */
             for(const_iterator first = other.begin(); first != other.end(); ++first)
                 push_back(*first);
         };
         explicit List(std::size_t n, const T & val = T() ) {
-            this->_M_size = 0;
-            this->_M_node = _myalloc.allocate(1);
-            _myalloc.construct(_M_node, _List_node<T>());
+            _M_size = 0;
+            _M_node = _node_alloc.allocate(1);
+            _node_alloc.construct(_M_node, 0);
             /* this->_M_node = new _List_node<T>(); */
             for(std::size_t i = 0; i < n; i++)
                 push_back(val);
         };
         List(iterator first, iterator last) {
-            this->_M_size = 0;
-            this->_M_node = _myalloc.allocate(1);
-            _myalloc.construct(_M_node, _List_node<T>());
+            _M_size = 0;
+            _M_node = _node_alloc.allocate(1);
+            _node_alloc.construct(_M_node, 0);
             /* this->_M_node = new _List_node<T>(); */
             for (; first != last; ++first)
                 push_back(*first);
@@ -217,10 +218,12 @@ namespace ft
             {
                 _Node* tmp = current;
                 current = current->getNext();
-                _myalloc.deallocate(tmp, 1);
+                _node_alloc.destroy(tmp);
+                _node_alloc.deallocate(tmp, 1);
                 /* delete tmp; */
             }
-            _myalloc.deallocate(_M_node, 1);
+            _node_alloc.destroy(_M_node);
+            _node_alloc.deallocate(_M_node, 1);
             /* delete _M_node; */
         };
         List & operator=(const List & other);
@@ -259,11 +262,11 @@ namespace ft
         }
         _Node* _M_create_node(const T & val)
         {
-            _List_node<T>* node;
-            node = _myalloc.allocate(1);
-            _myalloc.construct(node, val);
+            List_node<T>* node;
+            node = _node_alloc.allocate(1);
+            _node_alloc.construct(node, val);
             return node;
-            /* return new _List_node<T>(__x); */
+            /* return new _List_node<T>(val); */
         }
         void _M_insert(iterator __position, const T & __x) {
           _Node* tmp = _M_create_node(__x);
@@ -275,9 +278,10 @@ namespace ft
         }
 
     private:
-        _List_node<T>*  _M_node;
+        List_node<T>*  _M_node;
         std::size_t     _M_size;
-        allocator       _myalloc;
+        node_allocator  _node_alloc;
+        _Alloc          _data_alloc;
     };
 }
 
