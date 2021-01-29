@@ -1,24 +1,16 @@
 #include "List.hpp"
-#include "cassert"
-#include "list"
 
 int main() {
     /* ft::List<int> lst; */
     {
-        ft::List<int> lst;
-        lst.push_back(77);
-        std::cout << "mylist.front() is now " << lst.front() << '\n';
-        lst.push_back(22);
-        lst.front() -= lst.back();
-        std::cout << "mylist.front() is now " << lst.front() << '\n';
-    }
-    {
-        std::list<int> lst;
-        lst.push_back(77);
-        std::cout << "mylist.front() is now " << lst.front() << '\n';
-        lst.push_back(22);
-        lst.front() -= lst.back();
-        std::cout << "mylist.front() is now " << lst.front() << '\n';
+        ft::List<int>* lst = new ft::List<int>;
+        lst->push_back(77);
+        std::cout << "mylist->front() is now " << lst->front() << '\n';
+        lst->push_back(22);
+        lst->front() -= lst->back();
+        std::cout << "mylist->front() is now " << lst->front() << '\n';
+        delete lst;
+        while (1) {};
     }
     /* ft::List<int> empty_list; */
 	/* { */
