@@ -20,7 +20,7 @@ struct is_near {
 };
 // compare only integral part:
 bool mycomparison (double first, double second)
-{ return ( int(first)<int(second) ); }
+{ return ( int(first) < int(second) ); }
 // comparison, not case sensitive.
 bool compare_nocase (const std::string& first, const std::string& second)
 {
@@ -303,7 +303,7 @@ TEST_CASE("List", "[list]")
         }
         SECTION("erase") {
             std::list<int> mylist;
-            std::list<int>::iterator it1,it2;
+            std::list<int>::iterator it1, it2, it3;
             for (int i=1; i<10; ++i) mylist.push_back(i*10);
                                         // 10 20 30 40 50 60 70 80 90
             it1 = it2 = mylist.begin(); // ^^
@@ -315,10 +315,10 @@ TEST_CASE("List", "[list]")
                                         //    ^           ^
             ++it1;                      //       ^        ^
             --it2;                      //       ^     ^
-            mylist.erase (it1,it2);     // 10 30 60 80 90
+            it3 = mylist.erase (it1, it2);     // 10 30 60 80 90
                                         //        ^
             ft::List<int> mylist_impl;
-            ft::List<int>::iterator it1_impl,it2_impl;
+            ft::List<int>::iterator it1_impl, it2_impl, it3_impl;
             for (int i=1; i<10; ++i) mylist_impl.push_back(i*10);
                                         // 10 20 30 40 50 60 70 80 90
             it1_impl = it2_impl = mylist_impl.begin(); // ^^
@@ -328,7 +328,10 @@ TEST_CASE("List", "[list]")
             it2_impl = mylist_impl.erase (it2_impl);   // 10 30 40 50 60 80 90
             ++it1_impl;                      //       ^        ^
             --it2_impl;                      //       ^     ^
-            mylist_impl.erase (it1_impl,it2_impl);     // 10 30 60 80 90
+            it3_impl = mylist_impl.erase (it1_impl, it2_impl);     // 10 30 60 80 90
+
+            REQUIRE( *it3 == *it3_impl );
+
             it1 = mylist.begin();
             it1_impl = mylist_impl.begin();
             while ( it1 != mylist.end() && it1_impl != mylist_impl.end() )
@@ -339,15 +342,17 @@ TEST_CASE("List", "[list]")
             }
         }
         SECTION("swap") {
-            std::list<int> first (3,100);   // three ints with a value of 100
+            std::list<int> first;   // three ints with a value of 100
+            for (int i = 1; i < 10; ++i) first.push_back(i*10);
             std::list<int> second (5,200);  // five ints with a value of 200
             first.swap(second);
-            std::list<int>::iterator it=second.begin();
+            std::list<int>::iterator it = second.begin();
 
-            ft::List<int> first_impl (3,100);   // three ints with a value of 100
+            ft::List<int> first_impl;   // three ints with a value of 100
+            for (int i = 1; i < 10; ++i) first_impl.push_back(i*10);
             ft::List<int> second_impl (5,200);  // five ints with a value of 200
             first_impl.swap(second_impl);
-            ft::List<int>::iterator it_impl=second_impl.begin();
+            ft::List<int>::iterator it_impl = second_impl.begin();
 
             while ( it != second.end() && it_impl != second_impl.end() )
             {
@@ -498,124 +503,120 @@ TEST_CASE("List", "[list]")
                 ++it_impl;
             }
         }
-    /*     SECTION("unique") { */
-    /*         double mydoubles[]={ 12.15,  2.72, 73.0,  12.77,  3.14, */
-    /*                              12.77, 73.35, 72.25, 15.3,  72.25 }; */
-    /*         std::list<double> mylist (mydoubles,mydoubles+10); */
-    /*         mylist.sort();             //  2.72,  3.14, 12.15, 12.77, 12.77, */
-    /*                                    // 15.3,  72.25, 72.25, 73.0,  73.35 */
-    /*         mylist.unique();           //  2.72,  3.14, 12.15, 12.77 */
-    /*                                    // 15.3,  72.25, 73.0,  73.35 */
-    /*         mylist.unique (same_integral_part);  //  2.72,  3.14, 12.15 */
-    /*                                              // 15.3,  72.25, 73.0 */
-    /*         mylist.unique (is_near());           //  2.72, 12.15, 72.25 */
+        SECTION("unique") {
+            double mydoubles[]={ 12.15,  2.72, 73.0,  12.77,  3.14,
+                                 12.77, 73.35, 72.25, 15.3,  72.25 };
+            std::list<double> mylist (mydoubles,mydoubles+10);
+            mylist.sort();             //  2.72,  3.14, 12.15, 12.77, 12.77,
+                                       // 15.3,  72.25, 72.25, 73.0,  73.35
+            mylist.unique();           //  2.72,  3.14, 12.15, 12.77
+                                       // 15.3,  72.25, 73.0,  73.35
+            mylist.unique (same_integral_part);  //  2.72,  3.14, 12.15
+                                                 // 15.3,  72.25, 73.0
+            mylist.unique (is_near());           //  2.72, 12.15, 72.25
 
-    /*         ft::List<double> mylist_impl (mydoubles,mydoubles+10); */
-    /*         mylist_impl.sort();             //  2.72,  3.14, 12.15, 12.77, 12.77, */
-    /*         mylist_impl.unique();           //  2.72,  3.14, 12.15, 12.77 */
-    /*         mylist_impl.unique (same_integral_part);  //  2.72,  3.14, 12.15 */
-    /*         mylist_impl.unique (is_near());           //  2.72, 12.15, 72.25 */
+            ft::List<double> mylist_impl (mydoubles,mydoubles+10);
+            mylist_impl.sort();             //  2.72,  3.14, 12.15, 12.77, 12.77,
+            mylist_impl.unique();           //  2.72,  3.14, 12.15, 12.77
+            mylist_impl.unique (same_integral_part);  //  2.72,  3.14, 12.15
+            mylist_impl.unique (is_near());           //  2.72, 12.15, 72.25
 
-    /*         std::list<double>::iterator it = mylist.begin(); */
-    /*         ft::List<double>::iterator it_impl = mylist_impl.begin(); */
-    /*         while ( it != mylist.end() && it_impl != mylist_impl.end() ) */
-    /*         { */
-    /*             REQUIRE( *it == *it_impl); */
-    /*             ++it; */
-    /*             ++it_impl; */
-    /*         } */
-    /*     } */
-    /*     SECTION("merge") { */
-    /*         std::list<double> first, second; */
-    /*         first.push_back (3.1); */
-    /*         first.push_back (2.2); */
-    /*         first.push_back (2.9); */
-    /*         second.push_back (3.7); */
-    /*         second.push_back (7.1); */
-    /*         second.push_back (1.4); */
-    /*         first.sort(); */
-    /*         second.sort(); */
-    /*         first.merge(second); */
-    /*         // (second is now empty) */
-    /*         second.push_back (2.1); */
-    /*         first.merge(second,mycomparison); */
+            std::list<double>::iterator it = mylist.begin();
+            ft::List<double>::iterator it_impl = mylist_impl.begin();
+            while ( it != mylist.end() && it_impl != mylist_impl.end() )
+            {
+                REQUIRE( *it == *it_impl);
+                ++it;
+                ++it_impl;
+            }
+        }
+        SECTION("merge") {
+            std::list<double> first, second;
+            first.push_back (2.2);
+            first.push_back (2.9);
+            first.push_back (3.1);
+            second.push_back (1.4);
+            second.push_back (3.7);
+            second.push_back (7.1);
+            first.merge(second);
+            // (second is now empty)
+            second.push_back (2.1);
+            first.merge(second, mycomparison);
 
-    /*         ft::List<double> first_impl, second_impl; */
-    /*         first_impl.push_back (3.1); */
-    /*         first_impl.push_back (2.2); */
-    /*         first_impl.push_back (2.9); */
-    /*         second_impl.push_back (3.7); */
-    /*         second_impl.push_back (7.1); */
-    /*         second_impl.push_back (1.4); */
-    /*         first_impl.sort(); */
-    /*         second_impl.sort(); */
-    /*         first_impl.merge(second_impl); */
-    /*         // (second is now empty) */
-    /*         second_impl.push_back (2.1); */
-    /*         first_impl.merge(second,mycomparison); */
+            ft::List<double> first_impl, second_impl;
+            first_impl.push_back (2.2);
+            first_impl.push_back (2.9);
+            first_impl.push_back (3.1);
+            second_impl.push_back (1.4);
+            second_impl.push_back (3.7);
+            second_impl.push_back (7.1);
+            first_impl.merge(second_impl);
+            // (second is now empty)
+            second_impl.push_back (2.1);
+            first_impl.merge(second_impl, mycomparison);
 
-    /*         std::list<double>::iterator it = first.begin(); */
-    /*         ft::List<double>::iterator it_impl = first_impl.begin(); */
-    /*         while ( it != first.end() && it_impl != first_impl.end() ) */
-    /*         { */
-    /*             REQUIRE( *it == *it_impl); */
-    /*             ++it; */
-    /*             ++it_impl; */
-    /*         } */
-    /*     } */
-    /*     SECTION("sort") { */
-    /*         std::list<std::string> mylist; */
-    /*         std::list<std::string>::iterator it; */
-    /*         mylist.push_back ("one"); */
-    /*         mylist.push_back ("two"); */
-    /*         mylist.push_back ("Three"); */
-    /*         mylist.sort(); */
+            std::list<double>::iterator it = first.begin();
+            ft::List<double>::iterator it_impl = first_impl.begin();
+            while ( it != first.end() && it_impl != first_impl.end() )
+            {
+                REQUIRE( *it == *it_impl);
+                ++it;
+                ++it_impl;
+            }
+        }
+        SECTION("sort") {
+            std::list<std::string> mylist;
+            std::list<std::string>::iterator it;
+            mylist.push_back ("one");
+            mylist.push_back ("two");
+            mylist.push_back ("Three");
+            mylist.sort();
 
-    /*         ft::List<std::string> mylist_impl; */
-    /*         ft::List<std::string>::iterator it_impl; */
-    /*         mylist_impl.push_back ("one"); */
-    /*         mylist_impl.push_back ("two"); */
-    /*         mylist_impl.push_back ("Three"); */
-    /*         mylist_impl.sort(); */
+            ft::List<std::string> mylist_impl;
+            ft::List<std::string>::iterator it_impl;
+            mylist_impl.push_back ("one");
+            mylist_impl.push_back ("two");
+            mylist_impl.push_back ("Three");
+            mylist_impl.sort();
             
-    /*         it = mylist.begin(); */
-    /*         it_impl = mylist_impl.begin(); */
-    /*         while ( it != mylist.end() && it_impl != mylist_impl.end() ) */
-    /*         { */
-    /*             REQUIRE( *it == *it_impl); */
-    /*             ++it; */
-    /*             ++it_impl; */
-    /*         } */
+            it = mylist.begin();
+            it_impl = mylist_impl.begin();
+            while ( it != mylist.end() && it_impl != mylist_impl.end() )
+            {
+                REQUIRE( *it == *it_impl);
+                ++it;
+                ++it_impl;
+            }
 
-    /*         mylist.sort(compare_nocase); */
-    /*         mylist_impl.sort(compare_nocase); */
+            mylist.sort(compare_nocase);
+            mylist_impl.sort(compare_nocase);
 
-    /*         it = mylist.begin(); */
-    /*         it_impl = mylist_impl.begin(); */
-    /*         while ( it != mylist.end() && it_impl != mylist_impl.end() ) */
-    /*         { */
-    /*             REQUIRE( *it == *it_impl); */
-    /*             ++it; */
-    /*             ++it_impl; */
-    /*         } */
-    /*     } */
-    /*     SECTION("reverse") { */
-    /*         std::list<int> mylist; */
-    /*         for (int i=1; i<10; ++i) mylist.push_back(i); */
-    /*         mylist.reverse(); */
+            it = mylist.begin();
+            it_impl = mylist_impl.begin();
+            while ( it != mylist.end() && it_impl != mylist_impl.end() )
+            {
+                REQUIRE( *it == *it_impl);
+                ++it;
+                ++it_impl;
+            }
+        }
+        SECTION("reverse") {
+            std::list<int> mylist;
+            for (int i=1; i<10; ++i) mylist.push_back(i);
+            mylist.reverse();
 
-    /*         ft::List<int> mylist_impl; */
-    /*         for (int i=1; i<10; ++i) mylist_impl.push_back(i); */
-    /*         mylist_impl.reverse(); */
+            ft::List<int> mylist_impl;
+            for (int i=1; i<10; ++i) mylist_impl.push_back(i);
+            mylist_impl.reverse();
 
-    /*         std::list<int>::iterator it = mylist.begin(); */
-    /*         ft::List<int>::iterator it_impl = mylist_impl.begin(); */
-    /*         while ( it != mylist.end() && it_impl != mylist_impl.end() ) */
-    /*         { */
-    /*             REQUIRE( *it == *it_impl); */
-    /*             ++it; */
-    /*             ++it_impl; */
-    /*         } */
-    /*     } */
+            std::list<int>::iterator it = mylist.begin();
+            ft::List<int>::iterator it_impl = mylist_impl.begin();
+            while ( it != mylist.end() && it_impl != mylist_impl.end() )
+            {
+                REQUIRE( *it == *it_impl);
+                ++it;
+                ++it_impl;
+            }
+        }
     }
 }
