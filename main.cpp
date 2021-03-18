@@ -1,8 +1,10 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include <list>
+#include <vector>
 #include <iterator>
 #include "List.hpp"
+#include "Vector.hpp"
 
 // a predicate implemented as a function:
 bool single_digit (const int& value) { return (value<10); }
@@ -618,5 +620,427 @@ TEST_CASE("List", "[list]")
                 ++it_impl;
             }
         }
+    }
+}
+
+TEST_CASE("Vector", "[vector]") {
+    SECTION("Constructors") {
+        std::vector<int> first;                                // empty vector of ints
+        std::vector<int> second (4,100);                       // four ints with value 100
+        std::vector<int> third (second.begin(),second.end());  // iterating through second
+        std::vector<int> fourth (third);                       // a copy of third
+
+        // the iterator constructor can also be used to construct from arrays:
+        int myints[] = {16,2,77,29};
+        std::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+
+        ft::Vector<int> first_impl;                                // empty vector of ints
+        ft::Vector<int> second_impl (4,100);                       // four ints with value 100
+        ft::Vector<int> third_impl (second_impl.begin(),second_impl.end());  // iterating through second
+        ft::Vector<int> fourth_impl (third_impl);                       // a copy of third
+
+        // the iterator constructor can also be used to construct from arrays:
+        ft::Vector<int> fifth_impl (myints, myints + sizeof(myints) / sizeof(int) );
+
+        std::vector<int>::iterator it = fifth.begin();
+        ft::Vector<int>::iterator it_impl = fifth_impl.begin();
+        for (; it != fifth.end() && it_impl != fifth_impl.end(); ++it, ++it_impl)
+            REQUIRE( *it == *it_impl);
+    }
+    SECTION("vector::operator=") {
+        std::vector<int> foo (3,0);
+        std::vector<int> bar (5,0);
+        bar = foo;
+        foo = std::vector<int>();
+        ft::Vector<int> foo_impl (3,0);
+        ft::Vector<int> bar_impl (5,0);
+        bar_impl = foo_impl;
+        foo_impl = ft::Vector<int>();
+        REQUIRE( foo.size() == foo_impl.size() );
+        REQUIRE( bar.size() == bar_impl.size() );
+    }
+    SECTION("begin, end") {
+        std::vector<int> myvector;
+        for (int i=1; i<=5; i++) myvector.push_back(i);
+        ft::Vector<int> myvector_impl;
+        for (int i=1; i<=5; i++) myvector_impl.push_back(i);
+        std::vector<int>::iterator it = myvector.begin();
+        ft::Vector<int>::iterator it_impl = myvector_impl.begin();
+        for (; it != myvector.end() && it_impl != myvector_impl.end(); ++it,++it_impl)
+            REQUIRE( *it == *it_impl);
+    }
+    SECTION("rbegin, rend") {
+        std::vector<int> myvector(5);
+        int i = 0;
+        std::vector<int>::reverse_iterator rit = myvector.rbegin();
+        for (; rit!= myvector.rend(); ++rit)
+            *rit = ++i;
+        ft::Vector<int> myvector_impl(5);
+        i = 0;
+        ft::Vector<int>::reverse_iterator rit_impl = myvector_impl.rbegin();
+        for (; rit_impl != myvector_impl.rend(); ++rit_impl)
+            *rit_impl = ++i;
+        std::vector<int>::iterator it = myvector.begin();
+        ft::Vector<int>::iterator it_impl = myvector_impl.begin();
+        for (; it != myvector.end() && it_impl != myvector_impl.end(); ++it,++it_impl)
+        {
+            REQUIRE( *it == *it_impl);
+        }
+    }
+    SECTION("size") {
+        std::vector<int> myvector;
+        ft::Vector<int> myvector_impl;
+        REQUIRE(myvector.size() == myvector_impl.size());
+        for (int i=1; i<=5; i++) myvector.push_back(i);
+        for (int i=1; i<=5; i++) myvector_impl.push_back(i);
+        REQUIRE(myvector.size() == myvector_impl.size());
+        myvector.insert (myvector.end(),10,100);
+        myvector_impl.insert (myvector_impl.end(),10,100);
+        REQUIRE(myvector.size() == myvector_impl.size());
+        myvector.pop_back();
+        myvector_impl.pop_back();
+        REQUIRE(myvector.size() == myvector_impl.size());
+    }
+    SECTION("max_size")
+    {
+        ft::Vector<int> myvector_impl;
+        for (int i=1; i<=105; i++) myvector_impl.push_back(i);
+        REQUIRE(myvector_impl.max_size() > 0);
+    }
+    SECTION("resize")
+    {
+        std::vector<int> myvector;
+        for (int i=1; i<=10; i++) myvector.push_back(i);
+        myvector.resize(5);
+        myvector.resize(8,100);
+        myvector.resize(12);
+        ft::Vector<int> myvector_impl;
+        for (int i=1; i<=10; i++) myvector_impl.push_back(i);
+        myvector_impl.resize(5);
+        myvector_impl.resize(8,100);
+        myvector_impl.resize(12);
+        for (size_t i = 0; i < myvector.size() && i < myvector_impl.size(); i++)
+            REQUIRE(myvector[i] == myvector_impl[i]);
+    }
+    SECTION("capacity")
+    {
+        std::vector<int> myvector;
+        for (int i=1; i<=105; i++) myvector.push_back(i);
+        ft::Vector<int> myvector_impl;
+        for (int i=1; i<=105; i++) myvector_impl.push_back(i);
+        REQUIRE(myvector.capacity() == myvector_impl.capacity());
+    }
+    SECTION("empty")
+    {
+        int sum(0);
+        std::vector<int> myvector;
+        for (int i=1; i<=10; i++) myvector.push_back(i);
+        while (!myvector.empty()) {
+            sum += myvector.back();
+            myvector.pop_back();
+        } 
+        int sum_impl(0);
+        ft::Vector<int> myvector_impl;
+        for (int i=1; i<=10; i++) myvector_impl.push_back(i);
+        while (!myvector_impl.empty()) {
+            sum_impl += myvector_impl.back();
+            myvector_impl.pop_back();
+        } 
+        REQUIRE(sum == sum_impl);
+    }
+    SECTION("reserve")
+    {
+        std::vector<int>::size_type sz;
+        std::vector<int> foo;
+        sz = foo.capacity();
+        ft::Vector<int>::size_type sz_impl;
+        ft::Vector<int> foo_impl;
+        sz_impl = foo_impl.capacity();
+        for (int i=0; i<100; ++i) {
+            foo.push_back(i);
+            foo_impl.push_back(i);
+            if (sz!=foo.capacity()) {
+                sz = foo.capacity();
+                sz_impl = foo_impl.capacity();
+                REQUIRE(sz == sz_impl);
+            }
+        }
+
+        std::vector<int> bar;
+        sz = bar.capacity();
+        bar.reserve(100);   // this is the only difference with foo above
+        ft::Vector<int> bar_impl;
+        sz_impl = bar_impl.capacity();
+        bar_impl.reserve(100);   // this is the only difference with foo above
+        for (int i=0; i<100; ++i) {
+            bar.push_back(i);
+            bar_impl.push_back(i);
+            if (sz!=bar.capacity()) {
+                sz = bar.capacity();
+                sz_impl = bar_impl.capacity();
+                REQUIRE(sz == sz_impl);
+            }
+        }
+    }
+    SECTION("vector::operator[]")
+    {
+        std::vector<int> myvector (10);   // 10 zero-initialized elements
+        std::vector<int>::size_type sz = myvector.size();
+        // assign some values:
+        for (unsigned i = 0; i < sz; i++) myvector[i] = i;
+        // reverse vector using operator[]:
+        for (unsigned i = 0; i < sz/2; i++)
+        {
+            int temp;
+            temp = myvector[sz - 1 - i];
+            myvector[sz - 1 - i] = myvector[i];
+            myvector[i] = temp;
+        }
+
+        ft::Vector<int> myvector_impl (10);   // 10 zero-initialized elements
+        ft::Vector<int>::size_type sz_impl = myvector_impl.size();
+        // assign some values:
+        for (unsigned i = 0; i < sz_impl; i++) myvector_impl[i] = i;
+        // reverse vector using operator[]:
+        for (unsigned i = 0; i < sz_impl/2; i++)
+        {
+            int temp;
+            temp = myvector_impl[sz - 1 - i];
+            myvector_impl[sz - 1 - i] = myvector_impl[i];
+            myvector_impl[i] = temp;
+        }
+        for (unsigned i = 0; i < sz; i++)
+            REQUIRE(myvector[i] == myvector_impl[i]);
+    }
+    SECTION("vector::at")
+    {
+        std::vector<int> myvector (10);   // 10 zero-initialized ints
+        // assign some values:
+        for (unsigned i=0; i<myvector.size(); i++)
+            myvector.at(i)=i;
+
+        ft::Vector<int> myvector_impl (10);   // 10 zero-initialized ints
+        // assign some values:
+        for (unsigned i=0; i<myvector_impl.size(); i++)
+            myvector_impl.at(i)=i;
+
+        for (unsigned i=0; i < myvector.size(); i++)
+            REQUIRE(myvector.at(i) == myvector_impl.at(i));
+    }
+    SECTION("front")
+    {
+        std::vector<int> myvector;
+        myvector.push_back(78);
+        myvector.push_back(16);
+        // now front equals 78, and back 16
+        myvector.front() -= myvector.back();
+
+        ft::Vector<int> myvector_impl;
+        myvector_impl.push_back(78);
+        myvector_impl.push_back(16);
+        // now front equals 78, and back 16
+        /* WARN(myvector_impl.front()); */
+        /* WARN(myvector_impl.back()); */
+        myvector_impl.front() -= myvector_impl.back();
+
+        REQUIRE(myvector.front() == myvector_impl.front() );
+    }
+    SECTION("back")
+    {
+        std::vector<int> myvector;
+        myvector.push_back(10);
+        while (myvector.back() != 0)
+            myvector.push_back ( myvector.back() -1 );
+
+        ft::Vector<int> myvector_impl;
+        myvector_impl.push_back(10);
+        while (myvector_impl.back() != 0)
+            myvector_impl.push_back ( myvector_impl.back() -1 );
+
+        for (unsigned i=0; i<myvector.size() ; i++)
+            REQUIRE(myvector[i] == myvector_impl[i]);
+    }
+    SECTION("assign")
+    {
+        std::vector<int> first;
+        std::vector<int> second;
+        std::vector<int> third;
+        first.assign (7,100);             // 7 ints with a value of 100
+        std::vector<int>::iterator it;
+        it=first.begin()+1;
+        second.assign (it,first.end()-1); // the 5 central values of first
+        int myints[] = {1776,7,4};
+        third.assign (myints,myints+3);   // assigning from array.
+
+        ft::Vector<int> first_impl;
+        ft::Vector<int> second_impl;
+        ft::Vector<int> third_impl;
+        first_impl.assign (7,100);             // 7 ints with a value of 100
+        ft::Vector<int>::iterator it_impl;
+        it_impl = first_impl.begin() + 1;
+        second_impl.assign(it_impl, first_impl.end() - 1); // the 5 central values of first_impl
+        third_impl.assign(myints, myints + 3);   // assigning from array.
+
+        REQUIRE( int(first.size()) == int(first_impl.size()) );
+        REQUIRE( int(second.size()) == int(second_impl.size()) );
+        REQUIRE( int(third.size()) == int(third_impl.size()) );
+    }
+    SECTION("push_back")
+    {
+        std::vector<int> myvector;
+        ft::Vector<int> myvector_impl;
+        for (unsigned int i = 0; i < 240; i++) {
+            myvector.push_back(i);
+            myvector_impl.push_back(i);
+        }
+        for (unsigned i=0; i<myvector.size() ; i++)
+            REQUIRE(myvector[i] == myvector_impl[i]);
+        REQUIRE(myvector.size() == myvector_impl.size());
+    }
+    SECTION("pop_back")
+    {
+        std::vector<int> myvector;
+        int sum (0);
+        myvector.push_back (100);
+        myvector.push_back (200);
+        myvector.push_back (300);
+        while (!myvector.empty())
+        {
+            sum += myvector.back();
+            myvector.pop_back();
+        }
+
+        ft::Vector<int> myvector_impl;
+        int sum_impl (0);
+        myvector_impl.push_back (100);
+        myvector_impl.push_back (200);
+        myvector_impl.push_back (300);
+        while (!myvector_impl.empty())
+        {
+            sum_impl += myvector_impl.back();
+            myvector_impl.pop_back();
+        }
+        REQUIRE(sum == sum_impl);
+    }
+    SECTION("insert")
+    {
+        std::vector<int> myvector (3,100);
+        std::vector<int>::iterator it;
+        it = myvector.begin();
+        it = myvector.insert ( it , 200 );
+        myvector.insert (it,2,300);
+        // "it" no longer valid, get a new one:
+        it = myvector.begin();
+        std::vector<int> anothervector (2,400);
+        myvector.insert (it+2,anothervector.begin(),anothervector.end());
+        int myarray [] = { 501,502,503 };
+        myvector.insert (myvector.begin(), myarray, myarray+3);
+
+        ft::Vector<int> myvector_impl (3,100);
+        ft::Vector<int>::iterator it_impl;
+        it_impl = myvector_impl.begin();
+        it_impl = myvector_impl.insert ( it_impl , 200 );
+        myvector_impl.insert (it_impl, 2, 300);
+        // "it" no longer valid, get a new one:
+        it_impl = myvector_impl.begin();
+        ft::Vector<int> anothervector_impl (2,400);
+        myvector_impl.insert (it_impl+2,anothervector_impl.begin(),anothervector_impl.end());
+        int myarray_impl [] = { 501,502,503 };
+        myvector_impl.insert (myvector_impl.begin(), myarray_impl, myarray_impl + 3);
+
+        for (it = myvector.begin(), it_impl = myvector_impl.begin(); 
+                it < myvector.end(); ++it, ++it_impl)
+        {
+            REQUIRE(*it == *it_impl);
+        }
+    }
+    SECTION("erase")
+    {
+        std::vector<int> myvector;
+        ft::Vector<int> myvector_impl;
+        // set some values (from 1 to 10)
+        for (int i=1; i<=10; i++) myvector.push_back(i);
+        for (int i=1; i<=10; i++) myvector_impl.push_back(i);
+        // erase the 6th element
+        myvector.erase (myvector.begin()+5);
+        myvector_impl.erase (myvector_impl.begin()+5);
+        // erase the first 3 elements:
+        myvector.erase (myvector.begin(),myvector.begin()+3);
+        myvector_impl.erase (myvector_impl.begin(),myvector_impl.begin()+3);
+
+        for (unsigned i=0; i < myvector.size(); ++i)
+        {
+            REQUIRE(myvector[i] == myvector_impl[i]);
+        }
+    }
+    SECTION("swap")
+    {
+        std::vector<int> foo (3,100);   // three ints with a value of 100
+        std::vector<int> bar (5,200);   // five ints with a value of 200
+        foo.swap(bar);
+
+        ft::Vector<int> foo_impl (3,100);   // three ints with a value of 100
+        ft::Vector<int> bar_impl (5,200);   // five ints with a value of 200
+        foo_impl.swap(bar_impl);
+
+        for (unsigned i=0; i<foo_impl.size(); i++)
+            REQUIRE(foo[i] == foo_impl[i]);
+
+        for (unsigned i=0; i<bar.size(); i++)
+            REQUIRE(bar[i] == bar_impl[i]);
+    }
+    SECTION("clear")
+    {
+        std::vector<int> myvector;
+        myvector.push_back (100);
+        myvector.push_back (200);
+        myvector.push_back (300);
+        myvector.clear();
+        myvector.push_back (1101);
+        myvector.push_back (2202);
+
+        ft::Vector<int> myvector_impl;
+        myvector_impl.push_back (100);
+        myvector_impl.push_back (200);
+        myvector_impl.push_back (300);
+        myvector_impl.clear();
+        myvector_impl.push_back (1101);
+        myvector_impl.push_back (2202);
+
+        for (unsigned i=0; i<myvector.size(); i++)
+            REQUIRE(myvector[i] == myvector_impl[i]);
+    }
+    SECTION("relational operators")
+    {
+        ft::Vector<int> foo_impl (3,100);   // three ints with a value of 100
+        ft::Vector<int> bar_impl (2,200);   // two ints with a value of 200
+        ft::Vector<int> cer_impl (2,200);   // two ints with a value of 200
+        REQUIRE(bar_impl == cer_impl);
+        REQUIRE_FALSE(cer_impl == foo_impl);
+        REQUIRE(foo_impl < bar_impl);
+        REQUIRE(foo_impl <= bar_impl);
+        REQUIRE(bar_impl >= foo_impl);
+        REQUIRE(bar_impl > foo_impl);
+        REQUIRE(foo_impl != bar_impl);
+    }
+    SECTION("swap (vector)")
+    {
+        std::vector<int> foo (3,100);   // three ints with a value of 100
+        std::vector<int> bar (5,200);   // five ints with a value of 200
+        swap(foo, bar);
+
+        ft::Vector<int> foo_impl (3,100);   // three ints with a value of 100
+        ft::Vector<int> bar_impl (5,200);   // five ints with a value of 200
+        swap(foo_impl, bar_impl);
+
+        std::vector<int>::iterator it = foo.begin();
+        ft::Vector<int>::iterator it_impl = foo_impl.begin();
+        for (; it!=foo.end(); ++it,++it_impl)
+            REQUIRE(*it == *it_impl);
+
+        std::vector<int>::iterator itb = bar.begin();
+        ft::Vector<int>::iterator itb_impl = bar_impl.begin();
+        for (; itb!=bar.end(); ++itb,++itb_impl)
+            REQUIRE(*itb == *itb_impl);
     }
 }

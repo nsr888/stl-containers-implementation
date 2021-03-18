@@ -35,8 +35,6 @@ namespace ft
             this->_next = this->_prev = this;
         }
         T& getData() const { return *_data; }
-        /* List_node* getNext() const { return _next; } */
-        /* List_node* getPrev() const { return _prev; } */
         List_node & operator=(const List_node & other) {
             if (this == &other)
                 return *this;
@@ -130,8 +128,8 @@ namespace ft
         List_iterator<T>(const iterator & it) : _node(it._node) {}
         List_iterator<T>(node_t* other) : _node(other) {}
         ~List_iterator() {}
-        void _M_incr() { _node = _node->_next; }
-        void _M_decr() { _node = _node->_prev; }
+        void _increment() { _node = _node->_next; }
+        void _decrement() { _node = _node->_prev; }
         
         _Self & operator=(const List_iterator & other) {
             this->_node = other._node;
@@ -143,7 +141,6 @@ namespace ft
         bool operator!=(const List_iterator & other) const {
           return _node != other._node;
         }
-        _Self _const_cast() const { return *this; }
         T & operator*() const { 
             return _node->getData(); 
         }
@@ -151,21 +148,21 @@ namespace ft
             return _node->_data;
         }
         _Self & operator++() { 
-          this->_M_incr();
+          this->_increment();
           return *this;
         }
         _Self operator++(int) { 
           _Self __tmp = *this;
-          this->_M_incr();
+          this->_increment();
           return __tmp;
         }
         _Self & operator--() { 
-          this->_M_decr();
+          this->_decrement();
           return *this;
         }
         _Self operator--(int) { 
           _Self __tmp = *this;
-          this->_M_decr();
+          this->_decrement();
           return __tmp;
         }
 
@@ -184,8 +181,8 @@ namespace ft
         List_const_iterator<T>(const iterator & it) : _node(it._node) {}
         List_const_iterator<T>(node_t* other) : _node(other) {}
         ~List_const_iterator() {}
-        void _M_incr() { _node = _node->_next; }
-        void _M_decr() { _node = _node->_prev; }
+        void _increment() { _node = _node->_next; }
+        void _decrement() { _node = _node->_prev; }
         
         _Self & operator=(const List_const_iterator & other) {
             this->_node = other._node;
@@ -196,9 +193,6 @@ namespace ft
         bool operator!=(const List_const_iterator & other) const {
           return _node != other._node;
         }
-        _Self _const_cast() const {
-            return *this;
-        }
         T & operator*() const { 
             return _node->getData();
         }
@@ -206,21 +200,21 @@ namespace ft
             return _node->_data;
         }
         _Self & operator++() { 
-          this->_M_incr();
+          this->_increment();
           return *this;
         }
         _Self operator++(int) { 
           _Self __tmp = *this;
-          this->_M_incr();
+          this->_increment();
           return __tmp;
         }
         _Self & operator--() { 
-          this->_M_decr();
+          this->_decrement();
           return *this;
         }
         _Self operator--(int) { 
           _Self __tmp = *this;
-          this->_M_decr();
+          this->_decrement();
           return __tmp;
         }
 
@@ -239,35 +233,35 @@ namespace ft
         List_reverse_iterator<T>(const ft::List_iterator<T> & it)
             : _node(it._node)
         {
-           this->_M_incr(); 
+           this->_increment(); 
         }
         _Self & operator=(const List_iterator<T> & other) {
             this->_node = other._node;
             return *this;
         }
 
-        void _M_incr() { _node = _node->_prev; }
-        void _M_decr() { _node = _node->_next; }
+        void _increment() { _node = _node->_prev; }
+        void _decrement() { _node = _node->_next; }
         
         T & operator*() const { 
             return _node->getData();
         }
         _Self & operator++() { 
-          this->_M_incr();
+          this->_increment();
           return *this;
         }
         _Self operator++(int) { 
           _Self __tmp = *this;
-          this->_M_incr();
+          this->_increment();
           return __tmp;
         }
         _Self & operator--() { 
-          this->_M_decr();
+          this->_decrement();
           return *this;
         }
         _Self operator--(int) { 
           _Self __tmp = *this;
-          this->_M_decr();
+          this->_decrement();
           return __tmp;
         }
 
@@ -286,35 +280,35 @@ namespace ft
         List_reverse_const_iterator<T>(const ft::List_const_iterator<T> & it)
             : _node(it._node) 
         {
-           this->_M_incr(); 
+           this->_increment(); 
         }
         _Self & operator=(const List_const_iterator<T> & other) {
             this->_node = other._node;
             return *this;
         }
 
-        void _M_incr() { _node = _node->_prev; }
-        void _M_decr() { _node = _node->_next; }
+        void _increment() { _node = _node->_prev; }
+        void _decrement() { _node = _node->_next; }
         
         T & operator*() const { 
             return _node->getData();
         }
         _Self & operator++() { 
-          this->_M_incr();
+          this->_increment();
           return *this;
         }
         _Self operator++(int) { 
           _Self __tmp = *this;
-          this->_M_incr();
+          this->_increment();
           return __tmp;
         }
         _Self & operator--() { 
-          this->_M_decr();
+          this->_decrement();
           return *this;
         }
         _Self operator--(int) { 
           _Self __tmp = *this;
-          this->_M_decr();
+          this->_decrement();
           return __tmp;
         }
 
