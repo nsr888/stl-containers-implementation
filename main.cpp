@@ -6,6 +6,7 @@
 #include <iterator>
 #include "List.hpp"
 #include "Vector.hpp"
+#include "Map.hpp"
 
 // a predicate implemented as a function:
 bool single_digit (const int& value) { return (value<10); }
@@ -1052,33 +1053,35 @@ struct classcomp {
   {return lhs<rhs;}
 };
 TEST_CASE("Map", "[map]") {
-    /* std::map<char,int> first; */
-    /* first['a']=10; */
-    /* first['b']=30; */
-    /* first['c']=50; */
-    /* first['d']=70; */
-    /* ft::Map<char,int> first_impl; */
-    /* first_impl['a']=10; */
-    /* first_impl['b']=30; */
-    /* first_impl['c']=50; */
-    /* first_impl['d']=70; */
-    /* SECTION("Constructors and operator[]") { */
-    /*     std::map<char,int> second (first.begin(),first.end()); */
-    /*     std::map<char,int> third (second); */
-    /*     std::map<char,int,classcomp> fourth;                 // class as Compare */
-    /*     bool(*fn_pt)(char,char) = fncomp; */
-    /*     std::map<char,int,bool(*)(char,char)> fifth (fn_pt); // function pointer as Compare */
-    /*     ft::Map<char,int> second_impl (first.begin(),first.end()); */
-    /*     ft::Map<char,int> third_impl (second); */
-    /*     ft::Map<char,int,classcomp> fourth_impl;                 // class as Compare */
-    /*     bool(*fn_pt)(char,char) = fncomp; */
-    /*     ft::Map<char,int,bool(*)(char,char)> fifth_impl (fn_pt); // function pointer as Compare */
-    /*     REQUIRE(first_impl['a'] == first['a']); */
-    /*     REQUIRE(second_impl['c'] == second['c']); */
-    /*     REQUIRE(third_impl['d'] == third['d']); */
-    /*     REQUIRE(fourth_impl['b'] == fourth['b']); */
-    /*     REQUIRE(fifth_impl['b'] == fifth['b']); */
-    /* } */
+    std::map<char,int> first;
+    first['a']=10;
+    first['b']=30;
+    first['c']=50;
+    first['d']=70;
+    ft::Map<char,int> first_impl;
+    first_impl['a']=10;
+    first_impl['b']=30;
+    first_impl['c']=50;
+    first_impl['d']=70;
+    first_impl.display();
+    std::cout << first_impl['c'] << std::endl;
+    SECTION("Constructors and operator[]") {
+        /* std::map<char,int> second (first.begin(),first.end()); */
+        /* std::map<char,int> third (second); */
+        /* std::map<char,int,classcomp> fourth;                 // class as Compare */
+        /* bool(*fn_pt)(char,char) = fncomp; */
+        /* std::map<char,int,bool(*)(char,char)> fifth (fn_pt); // function pointer as Compare */
+        /* ft::Map<char,int> second_impl (first.begin(),first.end()); */
+        /* ft::Map<char,int> third_impl (second); */
+        /* ft::Map<char,int,classcomp> fourth_impl;                 // class as Compare */
+        /* bool(*fn_pt)(char,char) = fncomp; */
+        /* ft::Map<char,int,bool(*)(char,char)> fifth_impl (fn_pt); // function pointer as Compare */
+        REQUIRE(first_impl['a'] == first['a']);
+        /* REQUIRE(second_impl['c'] == second['c']); */
+        /* REQUIRE(third_impl['d'] == third['d']); */
+        /* REQUIRE(fourth_impl['b'] == fourth['b']); */
+        /* REQUIRE(fifth_impl['b'] == fifth['b']); */
+    }
     /* SECTION("size") { */
     /*     REQUIRE(first_impl.size() == 4); */
     /* } */
