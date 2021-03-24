@@ -1,14 +1,11 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 # include <iostream>
-/* # include <algorithm> */
-/* # include <memory> */
 # include <cmath>
-#include <ostream>
+# include <ostream>
 
 namespace ft
 {
-
     template<class T>
     struct Vector_iterator {
         typedef ft::Vector_iterator<T>      iterator;
@@ -250,10 +247,11 @@ namespace ft
             , _capacity(0)
             , _alloc(alloc)
         {};
-        explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) {
-            _size = n;
-            _capacity = n;
-            _alloc = alloc;
+        explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+            : _array(0)
+            , _size(n)
+            , _capacity(n)
+            , _alloc(alloc) {
             _array = _alloc.allocate(n);
             for (size_type i = 0; i < n; ++i)
                 _alloc.construct(&_array[i], val);
@@ -278,12 +276,20 @@ namespace ft
             for (size_type i = 0; i < n; ++i, ++first)
                 _alloc.construct(&_array[i], *first);
         }
-        Vector (const Vector& x) {
+        Vector (const Vector& x) 
+            : _array(0)
+            , _size(0)
+            , _capacity(0) {
             *this = x;
+        }
+        ~Vector() {
+            this->clear();
         }
         Vector& operator= (const Vector& x) {
             if (this == &x)
                 return *this;
+            if (this->_capacity)
+                this->clear();
             _size = x.size();
             _capacity = x.capacity();
             _array = _alloc.allocate(_capacity);
