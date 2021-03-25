@@ -67,57 +67,57 @@ namespace ft
 
         node* findPredecessor(const value_type& val)
         {
-            node* prec = 0;
-            node* rt = _node->root;
+            node* predecessor = 0;
+            node* root = this->_node->root;
             while (1)
             {
-                if (val.first < rt->pair->first) {
-                    rt = rt->left;
+                if (val.first < root->pair->first) {
+                    root = root->left;
                 }
-                else if (val.first > rt->pair->first)
+                else if (val.first > root->pair->first)
                 {
-                    prec = rt;
-                    rt = rt->right;
+                    predecessor = root;
+                    root = root->right;
                 }
                 else {
-                    if (rt->left) {
-                        prec = findMax(rt->left);
+                    if (root->left) {
+                        predecessor = findMax(root->left);
                     }
                     break;
                 }
-                if (!rt) {
+                if (!root) {
                     return 0;
                 }
             }
-            return prec;
+            return predecessor;
         }
 
 
         node* findSuccessor(const value_type& val)
         {
-            node* succ = 0;
-            node* rt = _node->root;
+            node* successor = 0;
+            node* root = this->_node->root;
             while (1)
             {
-                if (val.first < rt->pair->first)
+                if (val.first < root->pair->first)
                 {
-                    succ = rt;
-                    rt = rt->left;
+                    successor = root;
+                    root = root->left;
                 }
-                else if (val.first > rt->pair->first) {
-                    rt = rt->right;
+                else if (val.first > root->pair->first) {
+                    root = root->right;
                 }
                 else {
-                    if (rt->right) {
-                        succ = findMin(rt->right);
+                    if (root->right) {
+                        successor = findMin(root->right);
                     }
                     break;
                 }
-                if (!rt) {
-                    return nullptr;
+                if (!root) {
+                    return 0;
                 }
             }
-            return succ;
+            return successor;
         }
 
 
@@ -127,6 +127,11 @@ namespace ft
     template<class Key, class T, class Compare = std::less<Key>,
         class _Alloc = std::allocator<std::pair<const Key, T> > >
     class Map {
+    protected:
+        typedef Node<Key, T>                            node;
+        typedef typename _Alloc::template rebind<Node<Key, T> >::other
+            node_allocator;
+
     public:
         typedef Key                                     key_type;
         typedef T                                       mapped_type;
@@ -144,10 +149,6 @@ namespace ft
         /* typedef ft::Map_const_reverse_iterator<T>    const_reverse_iterator; */
         typedef std::ptrdiff_t                          difference_type;
         typedef size_t                                  size_type;
-        typedef typename _Alloc::template rebind<Node<Key, T> >::other
-            node_allocator;
-        typedef Node<Key, T>                            node;
-
 
         Map(){
             this->_root = NULL;
@@ -187,20 +188,6 @@ namespace ft
             }
             return found->pair->second;
         }
-        /* node * findNode(const key_type& k) { */
-        /*     node * curr = _root; */
-        /*     while (curr != 0) { */
-        /*         std::cout << "key: " << curr->pair->first << std::endl; */
-        /*         if (curr->pair->first == k) { */
-        /*             return curr; */
-        /*         } else if (curr->pair->first < k) { */
-        /*             curr = curr->left; */
-        /*         } else { */
-        /*             curr = curr->right; */
-        /*         } */
-        /*     } */
-        /*     return curr; */
-        /* } */
         node * findNode(const key_type& k) {
             node * curr = _root;
             node * parent = 0;
@@ -401,12 +388,7 @@ namespace ft
             return tp2; 
         }
 
-
-        
-
-        
-
-        /* print tree for testing only */
+        /* Debugging */
         void _printTree(node *node, std::string prefix, bool isLeft) {
             if (node != nullptr) {
                 std::cout << prefix;
