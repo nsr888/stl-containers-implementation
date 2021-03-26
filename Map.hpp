@@ -11,11 +11,12 @@ namespace ft
         Node *left;
         Node *right;
         Node *root;
+        bool is_end_node;
         std::pair<const Key, T> * pair;
         int height;
     };
 
-    template<class Key, class T>
+    template<class Key, class T, class Compare = std::less<Key> >
     struct Map_iterator {
         typedef ft::Map_iterator<Key, T>       iterator;
         typedef ft::Map_iterator<Key, T>       _Self;
@@ -24,103 +25,200 @@ namespace ft
         typedef T                                       mapped_type;
         typedef std::pair<const key_type, mapped_type>  value_type;
         typedef Node<Key, T>                            node;
+        typedef Compare                          key_compare;
 
         Map_iterator() : _node() {}
         Map_iterator<T>(const iterator & it) : _node(it._node) {}
         Map_iterator<T>(node * other) : _node(other) {}
         ~Map_iterator() {}
-        void _increment() {
-            _node = findSuccessor(std::make_pair(_node->pair->first, _node->pair->second)); 
-        }
-        void _decrement() { 
-            _node = findPredecessor(std::make_pair(_node->pair->first, _node->pair->second)); 
-        }
-        _Self & operator=(const Map_iterator & other) {
+
+        _Self & 
+        operator=(const Map_iterator & other) 
+        {
             this->_node = other._node;
             return *this;
         }
-        Key first(){ 
+
+        bool operator==(const Map_iterator & other) const {
+          return _node == other._node;
+        }
+
+        bool operator!=(const Map_iterator & other) const {
+          return _node != other._node;
+        }
+
+        void 
+        _increment() 
+        {
+            node * max = findMax(_node->root);
+            if (_node == max)
+                _node = _node->right;
+            else 
+            {
+                _node = findSuccessor(std::make_pair(_node->pair->first, 
+                        _node->pair->second), this->_node, _compare); 
+            }
+        }
+
+        void 
+        _decrement() 
+        { 
+            if (_node->is_end_node)
+                _node = findMax(_node->root);
+            else
+            {
+                _node = findPredecessor(std::make_pair(_node->pair->first, 
+                        _node->pair->second), this->_node, _compare); 
+            }
+        }
+
+        Key 
+        first()
+        { 
             return _node->pair->first; 
         }
-        T second(){ 
+
+        T 
+        second()
+        { 
             return _node->pair->second; 
         }
-        _Self & operator++() { 
+
+        _Self & 
+        operator++() 
+        { 
           this->_increment();
           return *this;
         }
-        _Self operator++(int) { 
+
+        _Self 
+        operator++(int) 
+        { 
           _Self __tmp = *this;
           this->_increment();
           return __tmp;
         }
-        _Self & operator--() { 
+
+        _Self & 
+        operator--() 
+        { 
           this->_decrement();
           return *this;
         }
-        _Self operator--(int) { 
+
+        _Self 
+        operator--(int) 
+        { 
           _Self __tmp = *this;
           this->_decrement();
           return __tmp;
         }
 
+        key_compare _compare;
+        node *      _node;
+    };
 
-        node* findPredecessor(const value_type& val)
+
+    template<class Key, class T, class Compare = std::less<Key> >
+    struct Map_const_iterator: public Map_iterator<Key, T> {
+        typedef ft::Map_const_iterator<Key, T>       iterator;
+        typedef ft::Map_const_iterator<Key, T>       _Self;
+        typedef int difference_type;
+        typedef Key                                     key_type;
+        typedef T                                       mapped_type;
+        typedef std::pair<const key_type, mapped_type>  value_type;
+        typedef Node<Key, T>                            node;
+        typedef Compare                          key_compare;
+
+
+        Map_const_iterator() : _node() {}
+        Map_const_iterator<T>(const iterator & it) : _node(it._node) {}
+        Map_const_iterator<T>(node * other) : _node(other) {}
+        ~Map_const_iterator() {}
+
+        _Self & 
+        operator=(const Map_const_iterator & other) 
         {
-            node* predecessor = 0;
-            node* root = this->_node->root;
-            while (1)
-            {
-                if (val.first < root->pair->first) {
-                    root = root->left;
-                }
-                else if (val.first > root->pair->first)
-                {
-                    predecessor = root;
-                    root = root->right;
-                }
-                else {
-                    if (root->left) {
-                        predecessor = findMax(root->left);
-                    }
-                    break;
-                }
-                if (!root) {
-                    return 0;
-                }
-            }
-            return predecessor;
+            this->_node = other._node;
+            return *this;
         }
 
-
-        node* findSuccessor(const value_type& val)
-        {
-            node* successor = 0;
-            node* root = this->_node->root;
-            while (1)
-            {
-                if (val.first < root->pair->first)
-                {
-                    successor = root;
-                    root = root->left;
-                }
-                else if (val.first > root->pair->first) {
-                    root = root->right;
-                }
-                else {
-                    if (root->right) {
-                        successor = findMin(root->right);
-                    }
-                    break;
-                }
-                if (!root) {
-                    return 0;
-                }
-            }
-            return successor;
+        bool operator==(const Map_const_iterator & other) const {
+          return _node == other._node;
         }
 
+        bool operator!=(const Map_const_iterator & other) const {
+          return _node != other._node;
+        }
 
+        void 
+        _increment() 
+        {
+            node * max = findMax(_node->root);
+            if (_node == max)
+                _node = _node->right;
+            else 
+            {
+                _node = findSuccessor(std::make_pair(_node->pair->first, 
+                        _node->pair->second), this->_node, _compare); 
+            }
+        }
+
+        void 
+        _decrement() 
+        { 
+            if (_node->is_end_node)
+                _node = findMax(_node->root);
+            else
+            {
+                _node = findPredecessor(std::make_pair(_node->pair->first, 
+                        _node->pair->second), this->_node, _compare); 
+            }
+        }
+
+        Key 
+        first()
+        { 
+            return _node->pair->first; 
+        }
+
+        T 
+        second()
+        { 
+            return _node->pair->second; 
+        }
+
+        _Self & 
+        operator++() 
+        { 
+          this->_increment();
+          return *this;
+        }
+
+        _Self 
+        operator++(int) 
+        { 
+          _Self __tmp = *this;
+          this->_increment();
+          return __tmp;
+        }
+
+        _Self & 
+        operator--() 
+        { 
+          this->_decrement();
+          return *this;
+        }
+
+        _Self 
+        operator--(int) 
+        { 
+          _Self __tmp = *this;
+          this->_decrement();
+          return __tmp;
+        }
+
+        key_compare _compare;
         node * _node;
     };
 
@@ -136,7 +234,7 @@ namespace ft
         typedef Key                                     key_type;
         typedef T                                       mapped_type;
         typedef std::pair<const key_type, mapped_type>  value_type;
-        typedef std::less<Key>                          key_compare;
+        typedef Compare                          key_compare;
         /* typedef value_compare()                         value_comp; */
         typedef _Alloc                                  allocator_type;
         typedef value_type&                             reference;
@@ -144,42 +242,83 @@ namespace ft
         typedef value_type*                             pointer;
         typedef const value_type*                       const_pointer;
         typedef ft::Map_iterator<Key, T>              iterator;
-        /* typedef ft::Map_const_iterator<T>        const_iterator; */
+        typedef ft::Map_const_iterator<Key, T>        const_iterator;
         /* typedef ft::Map_reverse_iterator<T>      reverse_iterator; */
         /* typedef ft::Map_const_reverse_iterator<T>    const_reverse_iterator; */
         typedef std::ptrdiff_t                          difference_type;
         typedef size_t                                  size_type;
 
-        Map(){
-            this->_root = NULL;
+        Map(const key_compare & compare = key_compare()){
+            this->_compare = compare;
+            this->_root = 0;
+            this->_rend = 0;
+            this->_end = 0;
         };
-        ~Map(){};
-        void display() {
-            _printTree(this->_root, "", false);
-        };
-        std::pair<iterator,bool> insert(const value_type& val) {
-            node * found_before = findNode(val.first);
-            if (found_before) {
-                return std::make_pair(iterator(found_before),false);
+        
+        Map(iterator start, iterator finish, const key_compare & compare = key_compare()) {
+            this->_compare = compare;
+            this->_root = 0;
+            this->_rend = 0;
+            this->_end = 0;
+            while (start != finish) {
+                insert(std::make_pair(start.first(), start.second()));
+                ++start;
             }
+        }
+        Map(const Map & other) {
+            this->_root = 0;
+            this->_rend = 0;
+            this->_end = 0;
+            for(const_iterator first = other.begin(); first != other.end(); ++first)
+                insert(std::make_pair(first.first(), first.second()));
+        }
+
+        ~Map(){ };
+
+        std::pair<iterator,bool> 
+        insert(const value_type& val)
+        {
+            node * found = findNode(val.first);
+            if (found) { return std::make_pair(iterator(found),false); }
+            _delete_end_nodes();
             this->_root = _insert(this->_root, val);
-            /* node * found_after = findNode(val.first); */
+            _insert_end_nodes();
+            _update_all_nodes_root(this->_root, this->_root);
             return std::make_pair(iterator(findNode(val.first)),true);
         };
-        void remove(const value_type& val) {
-            this->_root = _deleteNode(this->_root, val);
+
+        void 
+        remove(const value_type& val) 
+        {
+            this->_root = _delete_node(this->_root, val);
+            _update_all_nodes_root(this->_root, this->_root);
         };
-        iterator begin() {
+
+        iterator 
+        begin() 
+        {
             node * tmp;
             tmp = _root;
             return iterator(findMin(tmp));
         }
-        iterator end() {
+
+        iterator 
+        end() { return iterator(this->_end); }
+
+        const_iterator
+        begin() const
+        {
             node * tmp;
             tmp = _root;
-            return iterator(findMax(tmp));
+            return const_iterator(findMin(tmp));
         }
-        mapped_type& operator[] (const key_type& k) {
+
+        const_iterator 
+        end() const { return const_iterator(this->_end); }
+
+        mapped_type& 
+        operator[] (const key_type& k) 
+        {
             node * found = findNode(k);
             if (found == 0) {
                 insert(std::make_pair(k, mapped_type()));
@@ -188,148 +327,208 @@ namespace ft
             }
             return found->pair->second;
         }
-        node * findNode(const key_type& k) {
+
+        void 
+        display() 
+        {
+            _print_tree(this->_root, "", false);
+        };
+
+        node * 
+        findNode(const key_type& k) 
+        {
             node * curr = _root;
             node * parent = 0;
-            while (curr != 0 && curr->pair->first != k)
+            while (curr != 0 && !is_keys_equal(curr->pair->first, k))
             {
                 parent = curr;
-                if (k < curr->pair->first) {
+                if (_compare(k, curr->pair->first)) 
+                {
                     curr = curr->left;
                 }
-                else {
+                else 
+                {
                     curr = curr->right;
                 }
             }
-            if (curr == 0) {
+            if (curr == 0) 
+            {
                 return 0;
             }
-            if (parent == 0) {
+            if (parent == 0) 
+            {
                 return _root;
-            } else {
+            }
+            else
+            {
                 return curr;
             }
         }
-        
 
     private:
-        node * _root;
+        node *          _root;
+        node *          _rend;
+        node *          _end;
         node_allocator  _node_alloc;
         _Alloc          _data_alloc;
+        key_compare     _compare;
 
 
         /* AVL tree */
-        node* _insert(node *r, const value_type& val){
-            if(r == NULL){
-                node *n;
-                n = _node_alloc.allocate(1);
-                _node_alloc.construct(n, node());
+        node* 
+        _alloc_node(const value_type& val, bool is_end_node)
+        {
+            node *n;
+            n = _node_alloc.allocate(1);
+            _node_alloc.construct(n, node());
 
-                value_type * pr = _data_alloc.allocate(1);
-                _data_alloc.construct(pr, val);
+            value_type * pr = _data_alloc.allocate(1);
+            _data_alloc.construct(pr, val);
 
-                n->pair = pr;
-                r = n;
-                r->left = r->right = 0;
-                r->height = 1; 
-                r->root = this->_root;
-                return r;             
+            n->pair = pr;
+            n->left = n->right = 0;
+            n->is_end_node = (is_end_node) ? true : false;
+            n->root = this->_root;
+            n->height = 1; 
+            return n;             
+        }
+
+        void
+        _dealloc_node(node * p)
+        {
+            _data_alloc.destroy(p->pair);
+            _data_alloc.deallocate(p->pair, 1);
+            _node_alloc.destroy(p);
+            _node_alloc.deallocate(p, 1);
+            p = 0;
+        }
+
+        node* 
+        _insert(node *r, const value_type& val)
+        {
+            if(r == 0)
+            {
+                /* std::cout << "_insert()" << val.first << std::endl; */
+                r = _alloc_node(val, false);
+                return r;
             }
-            else{
-                if(val.first < r->pair->first)
-                    r->left = _insert(r->left,val);
+            else
+            {
+                if(_compare(val.first, r->pair->first))
+                    r->left = _insert(r->left, val);
                 else
-                    r->right = _insert(r->right,val);
+                    r->right = _insert(r->right, val);
             }
-            r->height = _calheight(r);
-            if(_bf(r)==2 && _bf(r->left)==1){
+            r->height = _calc_height(r);
+            if (_bf(r) == 2 && _bf(r->left) == 1)
+            {
                 r = _llrotation(r);
             }
-            else if(_bf(r)==-2 && _bf(r->right)==-1){
+            else if (_bf(r) == -2 && _bf(r->right) == -1)
+            {
                 r = _rrrotation(r);
             }
-            else if(_bf(r)==-2 && _bf(r->right)==1){
+            else if (_bf(r) == -2 && _bf(r->right) == 1)
+            {
                 r = _rlrotation(r);
             }
-            else if(_bf(r)==2 && _bf(r->left)==-1){
+            else if (_bf(r) == 2 && _bf(r->left) == -1)
+            {
                 r = _lrrotation(r);
             }        
             return r;
         }
 
-
-        node * _deleteNode(node *p, const value_type& val){
-            if(p->left == NULL && p->right == NULL){
+        node * 
+        _delete_node(node *p, const value_type& val)
+        {
+            if(p->left == 0 && p->right == 0)
+            {
                 if(p==this->_root)
                     this->_root = NULL;
                 _node_alloc.destroy(p);
                 _node_alloc.deallocate(p, 1);
-                return NULL;
+                return 0;
             }
             node *q;
-            if(p->pair->first < val.first){
-                p->right = _deleteNode(p->right, val);
+            if(_compare(p->pair->first, val.first))
+            {
+                p->right = _delete_node(p->right, val);
             }
-            else if(p->pair->first > val.first){
-                p->left = _deleteNode(p->left, val);
+            else if (_compare(p->pair->first, val.first))
+            {
+                p->left = _delete_node(p->left, val);
             }
-            else{
-                if(p->left != NULL){
+            else
+            {
+                if(p->left != 0)
+                {
                     q = findMax(p->left);
                     _data_alloc.destroy(p->pair);
                     _data_alloc.deallocate(p->pair, 1);
                     p->pair = q->pair;
-                    p->left = _deleteNode(p->left, *q->pair);
+                    p->left = _delete_node(p->left, *q->pair);
                 }
-                else{
+                else
+                {
                     q = findMin(p->right);
                     _data_alloc.destroy(p->pair);
                     _data_alloc.deallocate(p->pair, 1);
                     p->pair = q->pair;
-                    p->right = _deleteNode(p->right, *q->pair);
+                    p->right = _delete_node(p->right, *q->pair);
                 }
             }
-            if(_bf(p) == 2 && _bf(p->left) == 1){ p = _llrotation(p); } 
-            else if(_bf(p)==2 && _bf(p->left)==-1){ p = _lrrotation(p); }
-            else if(_bf(p)==2 && _bf(p->left)==0){ p = _llrotation(p); }
-            else if(_bf(p)==-2 && _bf(p->right)==-1){ p = _rrrotation(p); }
-            else if(_bf(p)==-2 && _bf(p->right)==1){ p = _rlrotation(p); }
-            else if(_bf(p)==-2 && _bf(p->right)==0){ p = _llrotation(p); }
+            if (_bf(p) == 2 && _bf(p->left) == 1) { p = _llrotation(p); } 
+            else if (_bf(p)==2 && _bf(p->left)==-1) { p = _lrrotation(p); }
+            else if (_bf(p)==2 && _bf(p->left)==0) { p = _llrotation(p); }
+            else if (_bf(p)==-2 && _bf(p->right)==-1) { p = _rrrotation(p); }
+            else if (_bf(p)==-2 && _bf(p->right)==1) { p = _rlrotation(p); }
+            else if (_bf(p)==-2 && _bf(p->right)==0) { p = _llrotation(p); }
             return p;
         }
 
-
-        int _calheight(node * p){
-            if(p->left && p->right){
-            if (p->left->height < p->right->height)
-                return p->right->height + 1;
-            else return  p->left->height + 1;
+        int 
+        _calc_height(node * p)
+        {
+            if (p->left && p->right)
+            {
+                if (p->left->height < p->right->height)
+                    return p->right->height + 1;
+                else 
+                    return  p->left->height + 1;
             }
-            else if(p->left && p->right == NULL){
+            else if (p->left && p->right == NULL)
+            {
                return p->left->height + 1;
             }
-            else if(p->left ==NULL && p->right){
+            else if (p->left ==NULL && p->right)
+            {
                return p->right->height + 1;
             }
             return 0;
         }
 
-
-        int _bf(node *n){
-            if(n->left && n->right){
+        int 
+        _bf(node *n)
+        {
+            if (n->left && n->right)
+            {
                 return n->left->height - n->right->height; 
             }
-            else if(n->left && n->right == NULL){
+            else if (n->left && n->right == NULL)
+            {
                 return n->left->height; 
             }
-            else if(n->left== NULL && n->right ){
+            else if (n->left== NULL && n->right )
+            {
                 return -n->right->height;
             }
             return 0;
         }
 
-
-        node * _llrotation(node *n){
+        node * 
+        _llrotation(node *n)
+        {
             node *p;
             node *tp;
             p = n;
@@ -341,8 +540,9 @@ namespace ft
             return tp; 
         }
 
-
-        node* _rrrotation(node*n){
+        node* 
+        _rrrotation(node*n)
+        {
             node *p;
             node *tp;
             p = n;
@@ -354,8 +554,9 @@ namespace ft
             return tp; 
         }
 
-
-        node * _rlrotation(node *n){
+        node *
+        _rlrotation(node *n)
+        {
             node *p;
             node *tp;
             node *tp2;
@@ -371,8 +572,9 @@ namespace ft
             return tp2; 
         }
 
-
-        node * _lrrotation(node *n){
+        node * 
+        _lrrotation(node *n)
+        {
             node *p;
             node *tp;
             node *tp2;
@@ -388,32 +590,160 @@ namespace ft
             return tp2; 
         }
 
+        void 
+        _insert_end_nodes() 
+        {
+            if (this->_root == 0)
+                return;
+            node * tmp;
+            tmp = _root;
+            node * min = findMin(tmp);
+            min->left = _alloc_node(value_type(), true);
+            /* std::cout << "max" << std::endl; */
+            this->_rend = min->left;
+            tmp = _root;
+            node * max = findMax(tmp);
+            /* std::cout << "after_max" << std::endl; */
+            max->right = _alloc_node(value_type(), true);
+            /* _print_tree(_root, "", false); */
+            this->_end = max->right;
+        }
+
+        void 
+        _delete_end_nodes() 
+        {
+            if (this->_root == 0)
+                return;
+            node * tmp;
+            tmp = _root;
+            while(tmp->left != 0)
+                tmp = tmp->left;
+            findMin(this->_root)->left = 0;
+            _dealloc_node(tmp);
+            tmp = _root;
+            while(tmp->right != 0)
+                tmp = tmp->right;
+            findMax(this->_root)->right = 0;
+            _dealloc_node(tmp);
+        }
+
+        void _update_all_nodes_root(node * p, node * rt) {
+            if (p == 0)
+                return;
+            p->root = rt;
+            _update_all_nodes_root(p->left, rt);
+            _update_all_nodes_root(p->right, rt);
+        };
+
+        bool is_keys_equal(key_type k1, key_type k2)
+        {
+            if (_compare(k1, k2) == false && _compare(k2, k1) == false)
+                return true;
+            return false;
+        }
+
         /* Debugging */
-        void _printTree(node *node, std::string prefix, bool isLeft) {
-            if (node != nullptr) {
+        void 
+        _print_tree(node *node, std::string prefix, bool isLeft) 
+        {
+            if (node != 0) 
+            {
                 std::cout << prefix;
                 std::cout << (isLeft ? "├──" : "└──" );
-                std::cout << node->pair->first << node->pair->second << std::endl;
-                _printTree(node->left, prefix + (isLeft ? "│   " : "    "), true);
-                _printTree(node->right, prefix + (isLeft ? "│   " : "    "), false);
+                std::cout << node->pair->first << "(" << node->pair->second << ")" << std::endl;
+                /* std::cout << node->pair->first << node->pair->second << std::endl; */
+                _print_tree(node->left, prefix + (isLeft ? "│   " : "    "), true);
+                _print_tree(node->right, prefix + (isLeft ? "│   " : "    "), false);
             }
         }
-        
     };
 
 
     template<class Key, class T>
-    Node<Key, T> * findMax(Node<Key, T> * p){
-        while(p->right != NULL)
+    Node<Key, T> * 
+    findMax(Node<Key, T> * p)
+    {
+        if (p == 0)
+            return p;
+        while(p->right != 0 && p->right->is_end_node != true)
             p = p->right;
         return p;    
     }
 
+
     template<class Key, class T>
-    Node<Key, T> * findMin(Node<Key, T> * p){
-        while(p->left != NULL)
+    Node<Key, T> * 
+    findMin(Node<Key, T> * p)
+    {
+        if (p == 0)
+            return p;
+        while(p->left != 0 && p->left->is_end_node != true)
             p = p->left;
         return p;    
+    }
+
+    template<class Key, class T>
+    Node<Key, T> *
+    findPredecessor(const std::pair<Key, T>& val, Node<Key, T> * p, 
+            typename ft::Map<Key, T>::key_compare _compare)
+    {
+        Node<Key, T>* predecessor = 0;
+        Node<Key, T>* root = p->root;
+        while (1)
+        {
+            if (_compare(val.first, root->pair->first))
+            {
+                root = root->left;
+            }
+            else if (val.first > root->pair->first)
+            {
+                predecessor = root;
+                root = root->right;
+            }
+            else 
+            {
+                if (root->left) 
+                {
+                    predecessor = findMax(root->left);
+                }
+                break;
+            }
+            if (!root) 
+            {
+                return 0;
+            }
+        }
+        return predecessor;
+    }
+
+    template<class Key, class T>
+    Node<Key, T> *
+    findSuccessor(const std::pair<Key, T>& val, Node<Key, T> * p, 
+            typename ft::Map<Key, T>::key_compare _compare)
+    {
+        Node<Key, T>* successor = 0;
+        Node<Key, T>* root = p->root;
+        while (1)
+        {
+            if (_compare(val.first, root->pair->first))
+            {
+                successor = root;
+                root = root->left;
+            }
+            else if (val.first > root->pair->first) {
+                root = root->right;
+            }
+            else {
+                if (root->right) {
+                    successor = findMin(root->right);
+                }
+                break;
+            }
+            if (!root) {
+                return 0;
+            }
+        }
+        return successor;
     }
 };
 #endif
