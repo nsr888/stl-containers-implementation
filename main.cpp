@@ -1079,52 +1079,60 @@ TEST_CASE("Map", "[map]") {
         REQUIRE(fourth_impl['b'] == fourth['b']);
         REQUIRE(fifth_impl['b'] == fifth['b']);
     }
-    /* SECTION("size") { */
-    /*     REQUIRE(first_impl.size() == 4); */
-    /* } */
-    /* SECTION("Operator =") { */
-    /*     ft::Map<char,int> second_impl; */
-    /*     second_impl = first_impl; */
-    /*     first_impl = ft::Map<char,int>; */
-    /*     REQUIRE(first_impl.size() == 0); */
-    /*     REQUIRE(second_impl.size() == 4); */
-    /*     REQUIRE(second_impl['c'] == 50); */
-    /* } */
-    /* SECTION("begin") { */
-    /*     ft::Map<char,int>::iterator it = first_impl.begin(); */
-    /*     REQUIRE(it->first == 'a'); */
-    /*     REQUIRE(it->second == 10); */
-    /*     ++it; */
-    /*     REQUIRE(it->first == 'b'); */
-    /*     REQUIRE(it->second == 30); */
-    /*     --it; */
-    /*     REQUIRE(it->first == 'a'); */
-    /*     REQUIRE(it->second == 10); */
-    /* } */
-    /* SECTION("clear") { */
-    /*     first_impl.clear(); */
-    /*     first_impl['x'] = 1101; */
-    /*     first_impl['y'] = 2202; */
-    /*     REQUIRE(first_impl.size() == 2); */
-    /*     ft::Map<char,int>::iterator it = first_impl.begin(); */
-    /*     REQUIRE(it->first == 'x'); */
-    /*     REQUIRE(it->second == 1101); */
-    /* } */
-    /* SECTION("count") { */
-    /*     REQUIRE(first_impl.count('a') == 1); */
-    /* } */
-    /* SECTION("empty") { */
-    /*     while (!first_impl.empty()) */
-    /*         first_impl.erase(mymap.begin()); */
-    /*     REQUIRE(first_impl.empty()); */
-    /* } */
-    /* SECTION("end") { */
-    /*     ft::Map<char,int>::iterator it_impl = first_impl.end(); */
-    /*     std::map<char,int>::iterator it = first.end(); */
-    /*     --it; */
-    /*     --it_impl; */
-    /*     REQUIRE(it == it_impl); */
-    /* } */
+    SECTION("size") {
+        REQUIRE(first_impl.size() == 4);
+    }
+    SECTION("Operator =") {
+        ft::Map<char,int> second_impl;
+        second_impl = first_impl;
+        first_impl = ft::Map<char,int>();
+        REQUIRE(first_impl.size() == 0);
+        REQUIRE(second_impl.size() == 4);
+        REQUIRE(second_impl['c'] == 50);
+    }
+    SECTION("begin") {
+        ft::Map<char,int>::iterator it = first_impl.begin();
+        REQUIRE(it->first == 'a');
+        REQUIRE(it->second == 10);
+        ++it;
+        REQUIRE(it->first == 'b');
+        REQUIRE(it->second == 30);
+        --it;
+        REQUIRE(it->first == 'a');
+        REQUIRE(it->second == 10);
+    }
+    SECTION("clear") {
+        first_impl.clear();
+        REQUIRE(first_impl.begin() == first_impl.end());
+        REQUIRE(first_impl.size() == 0);
+        first_impl['x'] = 1101;
+        first_impl['y'] = 2202;
+        REQUIRE(first_impl.size() == 2);
+        ft::Map<char,int>::iterator it = first_impl.begin();
+        it = first_impl.begin();
+        REQUIRE(it->first == 'x');
+        REQUIRE(it->second == 1101);
+        
+    }
+    SECTION("count") {
+        REQUIRE(first_impl.count('a') == 1);
+        REQUIRE(first_impl.count('m') == 0);
+    }
+    SECTION("empty") {
+        REQUIRE_FALSE(first_impl.empty());
+        while (!first_impl.empty())
+            first_impl.erase(first_impl.begin());
+        REQUIRE(first_impl.empty());
+    }
+    SECTION("end") {
+        ft::Map<char,int>::iterator it_impl = first_impl.end();
+        std::map<char,int>::iterator it = first.end();
+        --it;
+        --it_impl;
+        REQUIRE(*it == *it_impl);
+        REQUIRE(it->first == it_impl->first);
+        REQUIRE(it->second == it_impl->second);
+    }
     /* SECTION("equal_range") { */
     /*     std::pair<ft::Map<char,int>::iterator,ft::Map<char,int>::iterator> ret; */
     /*     ret = first_impl.equal_range('b'); */ 
@@ -1133,44 +1141,45 @@ TEST_CASE("Map", "[map]") {
     /*     REQUIRE(ret.second->first == 'c'); */
     /*     REQUIRE(ret.second->second == '50'); */
     /* } */
-    /* SECTION("find") { */
-    /*     ft::Map<char,int>::iterator it_impl; */
-    /*     it_impl = first_impl.find('b'); */
-    /*     REQUIRE(it_impl->first == 'b'); */
-    /*     REQUIRE(it_impl->second == 30); */
-    /* } */
-    /* SECTION("erase") { */
-    /*     ft::Map<char,int>::iterator it_impl; */
-    /*     first_impl['a']=10; */
-    /*     first_impl['b']=20; */
-    /*     first_impl['c']=30; */
-    /*     first_impl['d']=40; */
-    /*     first_impl['e']=50; */
-    /*     first_impl['f']=60; */
-    /*     it_impl = first_impl.find('b'); */
-    /*     first_impl.erase(it_impl); */
-    /*     REQUIRE(first_impl.size() == 5); */
-    /*     first_impl.erase('c'); */
-    /*     REQUIRE(first_impl.size() == 4); */
-    /*     it_impl = first_impl.find('e'); */
-    /*     first_impl.erase(it_impl, first_impl.end()); */
-    /*     std::map<char,int>::iterator it; */
-    /*     first['a']=10; */
-    /*     first['b']=20; */
-    /*     first['c']=30; */
-    /*     first['d']=40; */
-    /*     first['e']=50; */
-    /*     first['f']=60; */
-    /*     it = first.find('b'); */
-    /*     first.erase(it_impl); */
-    /*     first.erase('c'); */
-    /*     it = first.find('e'); */
-    /*     first.erase(it, first.end()); */
-    /*     it = first.begin() */
-    /*     it_impl = first_impl.begin() */
-    /*     for(; it != first.end() && it_impl != first_impl.end(); ++it, ++it_impl) */
-    /*         REQUIRE( it->first == it_impl->first); */
-    /* } */
+    SECTION("find") {
+        ft::Map<char,int>::iterator it_impl;
+        it_impl = first_impl.find('b');
+        REQUIRE(it_impl->first == 'b');
+        REQUIRE(it_impl->second == 30);
+    }
+    SECTION("erase") {
+        ft::Map<char,int>::iterator it_impl;
+        first_impl['a']=10;
+        first_impl['b']=20;
+        first_impl['c']=30;
+        first_impl['d']=40;
+        first_impl['e']=50;
+        first_impl['f']=60;
+        it_impl = first_impl.find('b');
+        first_impl.erase(it_impl);
+        REQUIRE(first_impl.size() == 5);
+        first_impl.erase('c');
+        REQUIRE(first_impl.size() == 4);
+        it_impl = first_impl.find('e');
+        first_impl.erase(it_impl, first_impl.end());
+
+        std::map<char,int>::iterator it;
+        first['a']=10;
+        first['b']=20;
+        first['c']=30;
+        first['d']=40;
+        first['e']=50;
+        first['f']=60;
+        it = first.find('b');
+        first.erase(it);
+        first.erase('c');
+        it = first.find('e');
+        first.erase(it, first.end());
+        it = first.begin();
+        it_impl = first_impl.begin();
+        for(; it != first.end() && it_impl != first_impl.end(); ++it, ++it_impl)
+            REQUIRE( it->first == it_impl->first);
+    }
     /* SECTION("insert") { */
     /*     std::map<char,int> mymap; */
     /*     // first insert function version (single parameter): */

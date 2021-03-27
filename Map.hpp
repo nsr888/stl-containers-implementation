@@ -72,16 +72,16 @@ namespace ft
             }
         }
 
-        Key 
-        first()
-        { 
-            return _node->pair->first; 
+        value_type &
+        operator*()
+        {
+            return (*_node->pair);
         }
 
-        T 
-        second()
-        { 
-            return _node->pair->second; 
+        value_type *
+        operator->()
+        {
+            return (_node->pair);
         }
 
         _Self & 
@@ -137,7 +137,7 @@ namespace ft
         ~Map_const_iterator() {}
 
         _Self & 
-        operator=(const Map_const_iterator & other) 
+        operator=(const Map_const_iterator & other)
         {
             this->_node = other._node;
             return *this;
@@ -176,16 +176,16 @@ namespace ft
             }
         }
 
-        Key 
-        first()
-        { 
-            return _node->pair->first; 
+        value_type &
+        operator*()
+        {
+            return (*_node->pair);
         }
 
-        T 
-        second()
-        { 
-            return _node->pair->second; 
+        value_type *
+        operator->()
+        {
+            return (_node->pair);
         }
 
         _Self & 
@@ -251,70 +251,128 @@ namespace ft
         Map(const key_compare & compare = key_compare()){
             this->_compare = compare;
             this->_root = 0;
-            this->_rend = 0;
-            this->_end = 0;
+            _init_end_nodes();
         };
         
         Map(iterator start, iterator finish, const key_compare & compare = key_compare()) {
             this->_compare = compare;
             this->_root = 0;
-            this->_rend = 0;
-            this->_end = 0;
+            _init_end_nodes();
             while (start != finish) {
-                insert(std::make_pair(start.first(), start.second()));
+                insert(std::make_pair(start->first, start->second));
                 ++start;
             }
         }
-        Map(const Map & other) {
+
+        Map & operator=(const Map & other) {
+            if (this == &other)
+                return *this;
             this->_root = 0;
-            this->_rend = 0;
-            this->_end = 0;
-            for(const_iterator first = other.begin(); first != other.end(); ++first)
-                insert(std::make_pair(first.first(), first.second()));
+            _init_end_nodes();
+            for(const_iterator it = other.begin(); it != other.end(); ++it)
+                insert(std::make_pair(it->first, it->second));
+            return *this;
         }
 
-        ~Map(){ };
+        Map(const Map & other) {
+            *this = other;
+        }
+
+        ~Map(){
+            _destroy_end_nodes();
+        };
 
         std::pair<iterator,bool> 
         insert(const value_type& val)
         {
             node * found = findNode(val.first);
             if (found) { return std::make_pair(iterator(found),false); }
-            _delete_end_nodes();
+            _deattach_end_nodes();
             this->_root = _insert(this->_root, val);
-            _insert_end_nodes();
+            _attach_end_nodes();
             _update_all_nodes_root(this->_root, this->_root);
-            return std::make_pair(iterator(findNode(val.first)),true);
+            return std::make_pair(find(val.first),true);
         };
 
-        void 
-        remove(const value_type& val) 
+        size_type 
+        erase(const key_type& k) 
         {
-            this->_root = _delete_node(this->_root, val);
+            node * found = findNode(k);
+            if (found == 0)
+                return 0;
+            _deattach_end_nodes();
+            this->_root = _delete_node(this->_root, k);
+            _attach_end_nodes();
             _update_all_nodes_root(this->_root, this->_root);
+            return 1;
         };
+        
+        void
+        erase(iterator position) 
+        {
+            erase(position->first);
+        };
+
+        void
+        erase (iterator first, iterator last) {
+            iterator next;
+            while(next != last)
+            {
+                next = first;
+                ++next;
+                erase(first);
+                first = next;
+            }
+        }
+
+        void
+        clear()
+        {
+            iterator tmp;
+            iterator first = begin();
+            iterator last = end();
+            while(tmp != last)
+            {
+                tmp = first;
+                ++tmp;
+                erase(first);
+                first = tmp;
+            }
+        }
 
         iterator 
         begin() 
         {
+            if (this->_root == 0)
+                return 0;
             node * tmp;
             tmp = _root;
             return iterator(findMin(tmp));
         }
 
         iterator 
-        end() { return iterator(this->_end); }
+        end() {
+            if (this->_root == 0)
+                return 0;
+            return iterator(this->_end); 
+        }
 
         const_iterator
         begin() const
         {
+            if (this->_root == 0)
+                return 0;
             node * tmp;
             tmp = _root;
             return const_iterator(findMin(tmp));
         }
 
         const_iterator 
-        end() const { return const_iterator(this->_end); }
+        end() const { 
+            if (this->_root == 0)
+                return 0;
+            return const_iterator(this->_end); 
+        }
 
         mapped_type& 
         operator[] (const key_type& k) 
@@ -328,14 +386,47 @@ namespace ft
             return found->pair->second;
         }
 
-        void 
-        display() 
+    private:
+        size_type 
+        _count_nodes_recursive(node * p) const 
         {
-            _print_tree(this->_root, "", false);
+            size_type count = 1;
+            if (p->left != 0 && !p->left->is_end_node)
+                count += _count_nodes_recursive(p->left);
+            if (p->right != 0 && !p->right->is_end_node)
+                count += _count_nodes_recursive(p->right);
+            return count;
+        }
+
+    public:
+        size_type 
+        size() const 
+        {
+            size_type count = 0;
+            if (this->_root == 0)
+                return 0;
+            count = _count_nodes_recursive(this->_root);
+            return count;
         };
 
-        node * 
-        findNode(const key_type& k) 
+        size_type
+        count (const key_type& k) const
+        {
+            if (find(k) == end())
+                return 0;
+            return 1;
+        }
+
+        bool 
+        empty() const
+        {
+            if (this->_root == 0)
+                return true;
+            return false;
+        }
+
+        const_iterator
+        find (const key_type& k) const
         {
             node * curr = _root;
             node * parent = 0;
@@ -343,27 +434,41 @@ namespace ft
             {
                 parent = curr;
                 if (_compare(k, curr->pair->first)) 
-                {
                     curr = curr->left;
-                }
                 else 
-                {
                     curr = curr->right;
-                }
             }
             if (curr == 0) 
-            {
-                return 0;
-            }
-            if (parent == 0) 
-            {
-                return _root;
-            }
+                return const_iterator(this->end());
             else
-            {
-                return curr;
-            }
+                return const_iterator(curr);
         }
+
+        iterator
+        find (const key_type& k) 
+        {
+            node * curr = _root;
+            node * parent = 0;
+            while (curr != 0 && !is_keys_equal(curr->pair->first, k))
+            {
+                parent = curr;
+                if (_compare(k, curr->pair->first)) 
+                    curr = curr->left;
+                else 
+                    curr = curr->right;
+            }
+            if (curr == 0) 
+                return iterator(this->end());
+            else
+                return iterator(curr);
+        }
+
+        void 
+        display() 
+        {
+            _print_tree(this->_root, "", false);
+        };
+
 
     private:
         node *          _root;
@@ -408,7 +513,6 @@ namespace ft
         {
             if(r == 0)
             {
-                /* std::cout << "_insert()" << val.first << std::endl; */
                 r = _alloc_node(val, false);
                 return r;
             }
@@ -419,7 +523,8 @@ namespace ft
                 else
                     r->right = _insert(r->right, val);
             }
-            r->height = _calc_height(r);
+            this->_root->height = _update_height(this->_root);
+            /* r->height = _calc_height(r); */
             if (_bf(r) == 2 && _bf(r->left) == 1)
             {
                 r = _llrotation(r);
@@ -436,28 +541,29 @@ namespace ft
             {
                 r = _lrrotation(r);
             }        
+            this->_root->height = _update_height(this->_root);
             return r;
         }
 
         node * 
-        _delete_node(node *p, const value_type& val)
+        _delete_node(node *p, const key_type& k)
         {
             if(p->left == 0 && p->right == 0)
             {
-                if(p==this->_root)
-                    this->_root = NULL;
+                if (p == this->_root)
+                    this->_root = 0;
                 _node_alloc.destroy(p);
                 _node_alloc.deallocate(p, 1);
                 return 0;
             }
             node *q;
-            if(_compare(p->pair->first, val.first))
+            if (_compare(p->pair->first, k))
             {
-                p->right = _delete_node(p->right, val);
+                p->right = _delete_node(p->right, k);
             }
-            else if (_compare(p->pair->first, val.first))
+            else if (_compare(k, p->pair->first))
             {
-                p->left = _delete_node(p->left, val);
+                p->left = _delete_node(p->left, k);
             }
             else
             {
@@ -467,7 +573,7 @@ namespace ft
                     _data_alloc.destroy(p->pair);
                     _data_alloc.deallocate(p->pair, 1);
                     p->pair = q->pair;
-                    p->left = _delete_node(p->left, *q->pair);
+                    p->left = _delete_node(p->left, q->pair->first);
                 }
                 else
                 {
@@ -475,16 +581,29 @@ namespace ft
                     _data_alloc.destroy(p->pair);
                     _data_alloc.deallocate(p->pair, 1);
                     p->pair = q->pair;
-                    p->right = _delete_node(p->right, *q->pair);
+                    p->right = _delete_node(p->right, q->pair->first);
                 }
             }
+            this->_root->height = _update_height(this->_root);
             if (_bf(p) == 2 && _bf(p->left) == 1) { p = _llrotation(p); } 
-            else if (_bf(p)==2 && _bf(p->left)==-1) { p = _lrrotation(p); }
-            else if (_bf(p)==2 && _bf(p->left)==0) { p = _llrotation(p); }
-            else if (_bf(p)==-2 && _bf(p->right)==-1) { p = _rrrotation(p); }
-            else if (_bf(p)==-2 && _bf(p->right)==1) { p = _rlrotation(p); }
-            else if (_bf(p)==-2 && _bf(p->right)==0) { p = _llrotation(p); }
+            else if (_bf(p) == 2 && _bf(p->left) == -1) { p = _lrrotation(p); }
+            else if (_bf(p) == 2 && _bf(p->left) == 0) { p = _llrotation(p); }
+            else if (_bf(p) == -2 && _bf(p->right) == -1) { p = _rrrotation(p); }
+            else if (_bf(p) == -2 && _bf(p->right) == 1) { p = _rlrotation(p); }
+            else if (_bf(p) == -2 && _bf(p->right) == 0) { p = _llrotation(p); }
             return p;
+        }
+
+        int 
+        _update_height(node * root)
+        {
+            if (root == 0)
+                return 0;
+            if (root->left)
+                root->left->height = _update_height(root->left);
+            if (root->right)
+                root->right->height = _update_height(root->right);
+            return 1 + std::max(_update_height(root->left), _update_height(root->right));
         }
 
         int 
@@ -497,15 +616,15 @@ namespace ft
                 else 
                     return  p->left->height + 1;
             }
-            else if (p->left && p->right == NULL)
+            else if (p->left && p->right == 0)
             {
                return p->left->height + 1;
             }
-            else if (p->left ==NULL && p->right)
+            else if (p->left == 0 && p->right)
             {
                return p->right->height + 1;
             }
-            return 0;
+            return 1;
         }
 
         int 
@@ -515,43 +634,48 @@ namespace ft
             {
                 return n->left->height - n->right->height; 
             }
-            else if (n->left && n->right == NULL)
+            else if (n->left && n->right == 0)
             {
                 return n->left->height; 
             }
-            else if (n->left== NULL && n->right )
+            else if (n->left == 0 && n->right )
             {
                 return -n->right->height;
             }
             return 0;
         }
 
+        /* void _update_node_height(node * p) { */
+        /*     if (p->right) */
+        /*         p->right->height = _calc_height(p->right); */
+        /*     if (p->left) */
+        /*         p->left->height = _calc_height(p->left); */
+        /*     p->height = _calc_height(p); */
+        /* } */
+
         node * 
         _llrotation(node *n)
         {
             node *p;
-            node *tp;
+            node *new_root;
             p = n;
-            tp = p->left;
-
-            p->left = tp->right;
-            tp->right = p;
-
-            return tp; 
+            new_root = p->left;
+            p->left = new_root->right;
+            new_root->right = p;
+            return new_root; 
         }
 
         node* 
         _rrrotation(node*n)
         {
             node *p;
-            node *tp;
+            node *new_root;
             p = n;
-            tp = p->right;
+            new_root = p->right;
 
-            p->right = tp->left;
-            tp->left = p;
-
-            return tp; 
+            p->right = new_root->left;
+            new_root->left = p;
+            return new_root; 
         }
 
         node *
@@ -559,17 +683,15 @@ namespace ft
         {
             node *p;
             node *tp;
-            node *tp2;
+            node *new_root;
             p = n;
             tp = p->right;
-            tp2 =p->right->left;
-
-            p->right = tp2->left;
-            tp->left = tp2->right;
-            tp2->left = p;
-            tp2->right = tp; 
-            
-            return tp2; 
+            new_root = p->right->left;
+            p->right = new_root->left;
+            tp->left = new_root->right;
+            new_root->left = p;
+            new_root->right = tp; 
+            return new_root; 
         }
 
         node * 
@@ -577,54 +699,47 @@ namespace ft
         {
             node *p;
             node *tp;
-            node *tp2;
+            node *new_root;
             p = n;
             tp = p->left;
-            tp2 =p->left->right;
+            new_root =p->left->right;
+            p->left = new_root->right;
+            tp->right = new_root->left;
+            new_root->right = p;
+            new_root->left = tp; 
+            return new_root; 
+        }
 
-            p->left = tp2->right;
-            tp->right = tp2->left;
-            tp2->right = p;
-            tp2->left = tp; 
-            
-            return tp2; 
+        void
+        _init_end_nodes()
+        {
+            this->_end = _alloc_node(value_type(), true);
+            this->_rend = _alloc_node(value_type(), true);
+        }
+
+        void
+        _destroy_end_nodes()
+        {
+            _dealloc_node(this->_end);
+            _dealloc_node(this->_rend);
         }
 
         void 
-        _insert_end_nodes() 
+        _attach_end_nodes() 
         {
             if (this->_root == 0)
                 return;
-            node * tmp;
-            tmp = _root;
-            node * min = findMin(tmp);
-            min->left = _alloc_node(value_type(), true);
-            /* std::cout << "max" << std::endl; */
-            this->_rend = min->left;
-            tmp = _root;
-            node * max = findMax(tmp);
-            /* std::cout << "after_max" << std::endl; */
-            max->right = _alloc_node(value_type(), true);
-            /* _print_tree(_root, "", false); */
-            this->_end = max->right;
+            findMin(_root)->left = this->_rend;
+            findMax(_root)->right = this->_end;
         }
 
         void 
-        _delete_end_nodes() 
+        _deattach_end_nodes() 
         {
             if (this->_root == 0)
                 return;
-            node * tmp;
-            tmp = _root;
-            while(tmp->left != 0)
-                tmp = tmp->left;
             findMin(this->_root)->left = 0;
-            _dealloc_node(tmp);
-            tmp = _root;
-            while(tmp->right != 0)
-                tmp = tmp->right;
             findMax(this->_root)->right = 0;
-            _dealloc_node(tmp);
         }
 
         void _update_all_nodes_root(node * p, node * rt) {
@@ -635,11 +750,32 @@ namespace ft
             _update_all_nodes_root(p->right, rt);
         };
 
-        bool is_keys_equal(key_type k1, key_type k2)
+        bool is_keys_equal(key_type k1, key_type k2) const
         {
             if (_compare(k1, k2) == false && _compare(k2, k1) == false)
                 return true;
             return false;
+        }
+
+        node * 
+        findNode(const key_type& k) 
+        {
+            node * curr = _root;
+            node * parent = 0;
+            while (curr != 0 && !is_keys_equal(curr->pair->first, k))
+            {
+                parent = curr;
+                if (_compare(k, curr->pair->first)) 
+                    curr = curr->left;
+                else 
+                    curr = curr->right;
+            }
+            if (curr == 0) 
+                return 0;
+            if (parent == 0) 
+                return _root;
+            else
+                return curr;
         }
 
         /* Debugging */
@@ -650,7 +786,7 @@ namespace ft
             {
                 std::cout << prefix;
                 std::cout << (isLeft ? "├──" : "└──" );
-                std::cout << node->pair->first << "(" << node->pair->second << ")" << std::endl;
+                std::cout << node->pair->first << "(" << node->height << ")" << std::endl;
                 /* std::cout << node->pair->first << node->pair->second << std::endl; */
                 _print_tree(node->left, prefix + (isLeft ? "│   " : "    "), true);
                 _print_tree(node->right, prefix + (isLeft ? "│   " : "    "), false);
