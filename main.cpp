@@ -3,10 +3,15 @@
 #include "catch.hpp"
 #include <list>
 #include <vector>
+#include <map>
+#include <stack>
+#include <queue>
 #include <iterator>
 #include "List.hpp"
 #include "Vector.hpp"
 #include "Map.hpp"
+#include "Stack.hpp"
+#include "Queue.hpp"
 
 // a predicate implemented as a function:
 bool single_digit (const int& value) { return (value<10); }
@@ -622,6 +627,19 @@ TEST_CASE("List", "[list]")
                 ++it_impl;
             }
         }
+    }
+    SECTION("relational operators")
+    {
+        ft::List<int> foo_impl (3,100);   // three ints with a value of 100
+        ft::List<int> bar_impl (2,200);   // two ints with a value of 200
+        ft::List<int> cer_impl (2,200);   // two ints with a value of 200
+        REQUIRE(bar_impl == cer_impl);
+        REQUIRE_FALSE(cer_impl == foo_impl);
+        REQUIRE(foo_impl < bar_impl);
+        REQUIRE(foo_impl <= bar_impl);
+        REQUIRE(bar_impl >= foo_impl);
+        REQUIRE(bar_impl > foo_impl);
+        REQUIRE(foo_impl != bar_impl);
     }
 }
 
@@ -1297,5 +1315,120 @@ TEST_CASE("Map", "[map]") {
         ft::swap(first_impl, second_impl);
         REQUIRE(second_impl['b'] == 30);
         REQUIRE(first_impl['x'] == 100);
+    }
+}
+TEST_CASE("Stack", "[stack]")
+{
+    std::list<int> mylist (3,100);
+    std::vector<int> myvector (2,200);
+    std::stack<int> first;
+    std::stack<int,std::list<int> > second(mylist);
+    std::stack<int,std::vector<int> > third;
+    std::stack<int,std::vector<int> > fourth (myvector);
+
+    ft::List<int> mylist_impl (3,100);
+    ft::Vector<int> myvector_impl (2,200);
+    ft::Stack<int> first_impl;
+    ft::Stack<int,ft::List<int> > second_impl (mylist_impl);
+    ft::Stack<int,ft::Vector<int> > third_impl;
+    ft::Stack<int,ft::Vector<int> > fourth_impl (myvector_impl);
+    SECTION("Constructors and size") {
+        REQUIRE(first.size() == first_impl.size());
+        REQUIRE(second.size() == second_impl.size());
+        REQUIRE(third.size() == third_impl.size());
+        REQUIRE(fourth.size() == fourth_impl.size());
+    }
+    SECTION("top") {
+        REQUIRE(second_impl.top() == 100);
+        REQUIRE(fourth_impl.top() == 200);
+    }
+    SECTION("push") {
+        second.push(333);
+        second_impl.push(333);
+        REQUIRE(second.size() == second_impl.size());
+        REQUIRE(second_impl.top() == second.top());
+    }
+    SECTION("pop") {
+        second.pop();
+        second_impl.pop();
+        fourth.pop();
+        fourth_impl.pop();
+        REQUIRE(second.size() == second_impl.size());
+        REQUIRE(fourth.size() == fourth_impl.size());
+    }
+    SECTION("empty") {
+        REQUIRE(first_impl.empty());
+        REQUIRE_FALSE(second_impl.empty());
+        REQUIRE(third_impl.empty());
+        REQUIRE_FALSE(fourth_impl.empty());
+    }
+    SECTION("relational operators")
+    {
+        third_impl.push(100);
+        REQUIRE_FALSE(third_impl == fourth_impl);
+        REQUIRE(third_impl != fourth_impl);
+        REQUIRE(third_impl < fourth_impl);
+        REQUIRE(third_impl <= fourth_impl);
+        REQUIRE_FALSE(third_impl > fourth_impl);
+        REQUIRE_FALSE(third_impl >= fourth_impl);
+    }
+}
+TEST_CASE("Queue", "[queue]")
+{
+    std::list<int> mylist (3,100);
+    std::list<int> mylist2 (2,200);
+    std::queue<int> first;
+    std::queue<int,std::list<int> > second(mylist);
+    std::queue<int,std::list<int> > third;
+    std::queue<int,std::list<int> > fourth (mylist2);
+
+    ft::List<int> mylist_impl (3,100);
+    ft::List<int> mylist_impl2 (2,200);
+    ft::Queue<int> first_impl;
+    ft::Queue<int,ft::List<int> > second_impl (mylist_impl);
+    ft::Queue<int,ft::List<int> > third_impl;
+    ft::Queue<int,ft::List<int> > fourth_impl (mylist_impl2);
+    SECTION("Constructors and size") {
+        REQUIRE(first.size() == first_impl.size());
+        REQUIRE(second.size() == second_impl.size());
+        REQUIRE(third.size() == third_impl.size());
+        REQUIRE(fourth.size() == fourth_impl.size());
+    }
+    SECTION("front") {
+        REQUIRE(second_impl.front() == second.front());
+        REQUIRE(fourth_impl.front() == fourth.front());
+    }
+    SECTION("back") {
+        REQUIRE(second_impl.back() == second.back());
+        REQUIRE(fourth_impl.back() == fourth.back());
+    }
+    SECTION("push") {
+        second.push(333);
+        second_impl.push(333);
+        REQUIRE(second.size() == second_impl.size());
+        REQUIRE(second_impl.back() == second.back());
+    }
+    SECTION("pop") {
+        second.pop();
+        second_impl.pop();
+        fourth.pop();
+        fourth_impl.pop();
+        REQUIRE(second.size() == second_impl.size());
+        REQUIRE(fourth.size() == fourth_impl.size());
+    }
+    SECTION("empty") {
+        REQUIRE(first_impl.empty());
+        REQUIRE_FALSE(second_impl.empty());
+        REQUIRE(third_impl.empty());
+        REQUIRE_FALSE(fourth_impl.empty());
+    }
+    SECTION("relational operators")
+    {
+        REQUIRE_FALSE(second_impl == fourth_impl);
+        REQUIRE(second_impl != fourth_impl);
+        REQUIRE(second_impl < fourth_impl);
+        REQUIRE(second_impl <= fourth_impl);
+        REQUIRE_FALSE(second_impl > fourth_impl);
+        REQUIRE_FALSE(second_impl >= fourth_impl);
     }
 }

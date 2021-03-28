@@ -1,8 +1,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
-# include <iostream>
+# include <memory>
 # include <cmath>
-# include <ostream>
 
 namespace ft
 {
@@ -554,7 +553,7 @@ namespace ft
     };
 
     template <class InputIterator1, class InputIterator2>
-      bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
+      bool equal_vector ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
     {
       while (first1!=last1) {
         if (!(*first1 == *first2))
@@ -568,11 +567,11 @@ namespace ft
     bool operator== (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
         if (lhs.size() != rhs.size())
             return false;
-        return equal(lhs.begin(), lhs.end(), rhs.begin());
+        return equal_vector(lhs.begin(), lhs.end(), rhs.begin());
     }
 
     template <class InputIterator1, class InputIterator2>
-    bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
+    bool lexicographical_compare_vector (InputIterator1 first1, InputIterator1 last1,
                                     InputIterator2 first2, InputIterator2 last2)
     {
       while (first1!=last1)
@@ -593,7 +592,7 @@ namespace ft
 
     template <class T, class Alloc>
     bool operator< (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
-        return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+        return lexicographical_compare_vector(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
     }
 
     template <class T, class Alloc>

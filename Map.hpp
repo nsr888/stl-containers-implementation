@@ -1,6 +1,8 @@
 #ifndef MAP_HPP
 # define MAP_HPP
-# include <iostream>
+# include <algorithm>
+# include <memory>
+# include <cmath>
 
 namespace ft
 {
@@ -918,25 +920,7 @@ namespace ft
                 else
                     r->right = _insert(r->right, val);
             }
-            this->_root->height = _update_height(this->_root);
-            if (_bf(r) == 2 && _bf(r->left) == 1)
-            {
-                r = _llrotation(r);
-            }
-            else if (_bf(r) == -2 && _bf(r->right) == -1)
-            {
-                r = _rrrotation(r);
-            }
-            else if (_bf(r) == -2 && _bf(r->right) == 1)
-            {
-                r = _rlrotation(r);
-            }
-            else if (_bf(r) == 2 && _bf(r->left) == -1)
-            {
-                r = _lrrotation(r);
-            }        
-            this->_root->height = _update_height(this->_root);
-            return r;
+            return _balance(r);
         }
 
         node * 
@@ -978,30 +962,28 @@ namespace ft
                     p->right = _delete_node(p->right, q->pair->first);
                 }
             }
+            return _balance(p);
+        }
+
+        node *
+        _balance(node * p)
+        {
             this->_root->height = _update_height(this->_root);
-            if (_bf(p) == 2 && _bf(p->left) == 1) 
-            { 
-                p = _llrotation(p); 
-            } 
-            else if (_bf(p) == 2 && _bf(p->left) == -1) 
-            { 
-                p = _lrrotation(p); 
-            }
-            else if (_bf(p) == 2 && _bf(p->left) == 0)
+            if (_bf(p) == 2)
             {
-                p = _llrotation(p);
+                if (_bf(p->left) < 0)
+                    return _lrrotation(p);
+                if (_bf(p->left) > 0)
+                    return _llrotation(p);
+                return _llrotation(p);
             }
-            else if (_bf(p) == -2 && _bf(p->right) == -1) 
+            if (_bf(p) == -2)
             {
-                p = _rrrotation(p); 
-            }
-            else if (_bf(p) == -2 && _bf(p->right) == 1) 
-            { 
-                p = _rlrotation(p); 
-            }
-            else if (_bf(p) == -2 && _bf(p->right) == 0) 
-            { 
-                p = _llrotation(p); 
+                if (_bf(p->right) < 0)
+                    return _rrrotation(p);
+                if (_bf(p->right) > 0)
+                    return _rlrotation(p);
+                return _llrotation(p);
             }
             return p;
         }

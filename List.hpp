@@ -1,6 +1,5 @@
 #ifndef LIST_HPP
 # define LIST_HPP
-# include <iostream>
 # include <algorithm>
 # include <memory>
 # include <cmath>
@@ -57,12 +56,7 @@ namespace ft
             prev->_next = next;
             next->_prev = prev;
         }
-        /* 11 39(this) 42 55 */
-        /* 0 1 2 3(first) 4 5 6(last) 7 8 */
-        /* _transfer(first, last) */
-        /* _transfer cuts nodes and puts it before "this" node */
-        /* 0 1 2 6 7 8 */
-        /* 11 39 4 5 3(this) 42 55  */
+        /* _transfer cuts nodes (first included, last not included) and puts it before "this" node */
         void _transfer(List_node<T> * const first, List_node<T> * const last)
         {
           if (this != last)
@@ -108,7 +102,6 @@ namespace ft
               x._next->_prev = x._prev->_next = &x;
               y._next = y._prev = &y;
             }
-            /* std::swap(x._data, y._data); */
         }
 
         T*              _data;
@@ -815,6 +808,73 @@ namespace ft
             return i;
         }
     };
+
+    template <class InputIterator1, class InputIterator2>
+      bool equal_list ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
+    {
+      while (first1!=last1) {
+        if (!(*first1 == *first2))
+          return false;
+        ++first1; ++first2;
+      }
+      return true;
+    }
+
+    template <class T, class Alloc>
+    bool operator== (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+        if (lhs.size() != rhs.size())
+            return false;
+        return equal_list(lhs.begin(), lhs.end(), rhs.begin());
+    }
+
+    template <class InputIterator1, class InputIterator2>
+    bool lexicographical_compare_list (InputIterator1 first1, InputIterator1 last1,
+                                    InputIterator2 first2, InputIterator2 last2)
+    {
+      while (first1!=last1)
+      {
+        if (first2==last2 || *first2<*first1) return false;
+        else if (*first1<*first2) return true;
+        ++first1; ++first2;
+      }
+      return (first2!=last2);
+    }
+
+    template <class T, class Alloc>
+    bool operator!= (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+        if (lhs == rhs)
+            return false;
+        return true;
+    }
+
+    template <class T, class Alloc>
+    bool operator< (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+        return lexicographical_compare_list(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    }
+
+    template <class T, class Alloc>
+    bool operator<= (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+        if (lhs < rhs || lhs == rhs)
+            return true;
+        return false;
+    }
+
+    template <class T, class Alloc>
+    bool operator> (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+        if (lhs < rhs)
+            return false;
+        if (lhs == rhs)
+            return false;
+        return true;
+    }
+    
+    template <class T, class Alloc>
+    bool operator>= (const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+        if (!(lhs < rhs))
+            return true;
+        return false;
+    }
+
 }
 
 #endif
