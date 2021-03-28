@@ -122,7 +122,7 @@ namespace ft
         typedef ft::List_iterator<T>       iterator;
         typedef ft::List_node<T>           node_t;
         typedef ft::List_iterator<T>       _Self;
-        typedef int difference_type;
+        typedef int                        difference_type;
         
         List_iterator() : _node() {}
         List_iterator<T>(const iterator & it) : _node(it._node) {}
@@ -172,10 +172,10 @@ namespace ft
 
     template<class T>
     struct List_const_iterator {
-        typedef ft::List_iterator<T>       iterator;
-        typedef const ft::List_node<T>           node_t;
-        typedef ft::List_const_iterator<T>       _Self;
-        typedef int difference_type;
+        typedef ft::List_iterator<T>            iterator;
+        typedef const ft::List_node<T>          node_t;
+        typedef ft::List_const_iterator<T>      _Self;
+        typedef int                             difference_type;
         
         List_const_iterator() : _node() {}
         List_const_iterator<T>(const iterator & it) : _node(it._node) {}

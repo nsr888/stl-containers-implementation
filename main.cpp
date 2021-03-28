@@ -1133,14 +1133,14 @@ TEST_CASE("Map", "[map]") {
         REQUIRE(it->first == it_impl->first);
         REQUIRE(it->second == it_impl->second);
     }
-    /* SECTION("equal_range") { */
-    /*     std::pair<ft::Map<char,int>::iterator,ft::Map<char,int>::iterator> ret; */
-    /*     ret = first_impl.equal_range('b'); */ 
-    /*     REQUIRE(ret.first->first == 'b'); */
-    /*     REQUIRE(ret.first->second == 30); */
-    /*     REQUIRE(ret.second->first == 'c'); */
-    /*     REQUIRE(ret.second->second == '50'); */
-    /* } */
+    SECTION("equal_range") {
+        std::pair<ft::Map<char,int>::iterator,ft::Map<char,int>::iterator> ret;
+        ret = first_impl.equal_range('b'); 
+        REQUIRE(ret.first->first == 'b');
+        REQUIRE(ret.first->second == 30);
+        REQUIRE(ret.second->first == 'c');
+        REQUIRE(ret.second->second == 50);
+    }
     SECTION("find") {
         ft::Map<char,int>::iterator it_impl;
         it_impl = first_impl.find('b');
@@ -1180,120 +1180,122 @@ TEST_CASE("Map", "[map]") {
         for(; it != first.end() && it_impl != first_impl.end(); ++it, ++it_impl)
             REQUIRE( it->first == it_impl->first);
     }
-    /* SECTION("insert") { */
-    /*     std::map<char,int> mymap; */
-    /*     // first insert function version (single parameter): */
-    /*     mymap.insert ( std::pair<char,int>('a',100) ); */
-    /*     mymap.insert ( std::pair<char,int>('z',200) ); */
-    /*     ft::Map<char,int> mymap_impl; */
-    /*     mymap_impl.insert ( std::pair<char,int>('a',100) ); */
-    /*     mymap_impl.insert ( std::pair<char,int>('z',200) ); */
-    /*     std::pair<std::map<char,int>::iterator,bool> ret; */
-    /*     ret = mymap_impl.insert ( std::pair<char,int>('z',500) ); */
-    /*     REQUIRE (ret.second == false); */
-    /*     // second insert function version (with hint position): */
-    /*     std::map<char,int>::iterator it = mymap.begin(); */
-    /*     mymap.insert (it, std::pair<char,int>('b',300));  // max efficiency inserting */
-    /*     mymap.insert (it, std::pair<char,int>('c',400));  // no max efficiency inserting */
-    /*     ft::Map<char,int>::iterator it_impl = mymap_impl.begin(); */
-    /*     mymap_impl.insert (it_impl, std::pair<char,int>('b',300));  // max efficiency inserting */
-    /*     mymap_impl.insert (it_impl, std::pair<char,int>('c',400));  // no max efficiency inserting */
-    /*     // third insert function version (range insertion): */
-    /*     std::map<char,int> anothermap; */
-    /*     ft::Map<char,int> anothermap_impl; */
-    /*     anothermap.insert(mymap.begin(),mymap.find('c')); */
-    /*     anothermap_impl.insert(mymap_impl.begin(),mymap_impl.find('c')); */
-    /*     // showing contents: */
-    /*     for (it=mymap.begin(), it_impl = mymap_impl.begin(); it!=mymap.end(); ++it, ++it_impl) */
-    /*     { */
-    /*         REQUIRE(it->first == it_impl->first); */
-    /*         REQUIRE(it->second == it_impl->second); */
-    /*     } */
-    /*     for (it=anothermap.begin(), it_impl = anothermap_impl.begin(); it!=anothermap.end(); ++it, ++it_impl) */
-    /*     { */
-    /*         REQUIRE(it->first == it_impl->first); */
-    /*         REQUIRE(it->second == it_impl->second); */
-    /*     } */
-    /* } */
-    /* SECTION("rbegin & rend") { */
-    /*     std::map<char,int>::reverse_iterator rit = first.rbegin(); */
-    /*     ft::Map<char,int>::reverse_iterator rit_impl = first_impl.rbegin(); */
-    /*     for(;rit != first.rend(); ++rit, ++rit_impl) */
-    /*     { */
-    /*         REQUIRE(rit->first == rit_impl->first); */
-    /*         REQUIRE(rit->second == rit_impl->second); */
-    /*     } */
-    /* } */
-    /* SECTION("key_comp") { */
-    /*     std::map<char,int>::key_compare mycomp = first.key_comp(); */
-    /*     ft::Map<char,int>::key_compare mycomp_impl = first_impl.key_comp(); */
-    /*     char highest = first.rbegin()->first; */
-    /*     char highest_impl = first_impl.rbegin()->first; */
-    /*     REQUIRE(mycomp(it->first, highest) == mycomp_impl.(it_impl->first, highest_impl)); */
-    /* } */
-    /* SECTION("lower_bound") { */
-    /*     ft::Map<char,int>::iterator itlow_impl,itup_impl; */
-    /*     first_impl['a']=10; */
-    /*     first_impl['b']=20; */
-    /*     first_impl['c']=30; */
-    /*     first_impl['d']=40; */
-    /*     first_impl['e']=50; */
-    /*     first_impl['f']=60; */
-    /*     std::map<char,int>::iterator itlow, itup; */
-    /*     first['a']=10; */
-    /*     first['b']=20; */
-    /*     first['c']=30; */
-    /*     first['d']=40; */
-    /*     first['e']=50; */
-    /*     first['f']=60; */
-    /*     itlow = first.lower_bound('b'); */
-    /*     itup = first.upper_bound('d'); */
-    /*     first.erase(itlow,itup); */
-    /*     itlow_impl = first_impl.lower_bound('b'); */
-    /*     itup_impl = first_impl.upper_bound('d'); */
-    /*     first_impl.erase(itlow_impl,itup_impl); */
-    /*     std::map<char,int>::iterator it = first.begin(); */
-    /*     ft::Map<char,int>::iterator it_impl = first_impl.begin(); */
-    /*     for(;rit != first.rend(); ++it, ++it_impl) */
-    /*     { */
-    /*         REQUIRE(rit->first == rit_impl->first); */
-    /*         REQUIRE(rit->second == rit_impl->second); */
-    /*     } */
-    /* } */
-    /* SECTION("max_size") { */
-    /*     REQUIRE(first_impl.max_size > 0); */
-    /* } */
-    /* SECTION("swap") { */
-    /*     ft::Map<char,int> second_impl; */
-    /*     second_impl['x'] = 100; */
-    /*     second_impl.swap(first); */
-    /*     REQUIRE(second_impl['b'] == 30); */
-    /*     REQUIRE(first_impl['x'] == 100); */
-    /* } */
-    /* SECTION("value_comp") { */
-    /*     std::pair<char,int> highest = *first.rbegin(); */
-    /*     std::pair<char,int> highest_impl = *first_impl.rbegin(); */
-    /*     std::map<char,int>::iterator it = first.begin(); */
-    /*     ft::Map<char,int>::iterator it_impl = first_impl.begin(); */
-    /*     REQUIRE(first.value_comp()(*it, highest) == first_impl.value_comp()(*it_impl, highest_impl)); */
-    /* } */
-    /* SECTION("relational operators") */
-    /* { */
-    /*     ft::Map<char,int> second_impl; */
-    /*     second_impl['a'] = 100; */
-    /*     second_impl['z'] = 1000; */
-    /*     REQUIRE_FALSE(first_impl == second_impl); */
-    /*     REQUIRE(first_impl != second_impl); */
-    /*     REQUIRE(first_impl < second_impl); */
-    /*     REQUIRE(first_impl <= second_impl); */
-    /*     REQUIRE_FALSE(first_impl > second_impl); */
-    /*     REQUIRE_FALSE(first_impl >= second_impl); */
-    /* } */
-    /* SECTION("swap non-member overloads") { */
-    /*     ft::Map<char,int> second_impl; */
-    /*     second_impl['x'] = 100; */
-    /*     swap(first, second_impl); */
-    /*     REQUIRE(second_impl['b'] == 30); */
-    /*     REQUIRE(first_impl['x'] == 100); */
-    /* } */
+    SECTION("insert") {
+        std::map<char,int> mymap;
+        // first insert function version (single parameter):
+        mymap.insert ( std::pair<char,int>('a',100) );
+        mymap.insert ( std::pair<char,int>('z',200) );
+        ft::Map<char,int> mymap_impl;
+        mymap_impl.insert ( std::pair<char,int>('a',100) );
+        mymap_impl.insert ( std::pair<char,int>('z',200) );
+        std::pair<ft::Map<char,int>::iterator,bool> ret;
+        ret = mymap_impl.insert ( std::pair<char,int>('z',500) );
+        REQUIRE (ret.second == false);
+        // second insert function version (with hint position):
+        std::map<char,int>::iterator it = mymap.begin();
+        mymap.insert (it, std::pair<char,int>('b',300));  // max efficiency inserting
+        mymap.insert (it, std::pair<char,int>('c',400));  // no max efficiency inserting
+        ft::Map<char,int>::iterator it_impl = mymap_impl.begin();
+        mymap_impl.insert (it_impl, std::pair<char,int>('b',300));  // max efficiency inserting
+        mymap_impl.insert (it_impl, std::pair<char,int>('c',400));  // no max efficiency inserting
+        // third insert function version (range insertion):
+        std::map<char,int> anothermap;
+        ft::Map<char,int> anothermap_impl;
+        anothermap.insert(mymap.begin(),mymap.find('c'));
+        anothermap_impl.insert(mymap_impl.begin(),mymap_impl.find('c'));
+        // showing contents:
+        for (it=mymap.begin(), it_impl = mymap_impl.begin(); it != mymap.end(); ++it, ++it_impl)
+        {
+            REQUIRE(it->first == it_impl->first);
+            REQUIRE(it->second == it_impl->second);
+        }
+        for (it=anothermap.begin(), it_impl = anothermap_impl.begin(); it!=anothermap.end(); ++it, ++it_impl)
+        {
+            REQUIRE(it->first == it_impl->first);
+            REQUIRE(it->second == it_impl->second);
+        }
+    }
+    SECTION("rbegin & rend") {
+        std::map<char,int>::reverse_iterator rit = first.rbegin();
+        ft::Map<char,int>::reverse_iterator rit_impl = first_impl.rbegin();
+        for(;rit_impl != first_impl.rend(); ++rit, ++rit_impl)
+        {
+            REQUIRE(rit->first == rit_impl->first);
+            REQUIRE(rit->second == rit_impl->second);
+        }
+    }
+    SECTION("key_comp") {
+        std::map<char,int>::key_compare mycomp = first.key_comp();
+        ft::Map<char,int>::key_compare mycomp_impl = first_impl.key_comp();
+        char highest = first.rbegin()->first;
+        char highest_impl = first_impl.rbegin()->first;
+        std::map<char,int>::iterator it = first.begin();
+        ft::Map<char,int>::iterator it_impl = first_impl.begin();
+        REQUIRE(mycomp(it->first, highest) == mycomp_impl(it_impl->first, highest_impl));
+    }
+    SECTION("lower_bound and upper_bound") {
+        ft::Map<char,int>::iterator itlow_impl,itup_impl;
+        first_impl['a']=10;
+        first_impl['b']=20;
+        first_impl['d']=40;
+        first_impl['e']=50;
+        first_impl['f']=60;
+        std::map<char,int>::iterator itlow, itup;
+        first['a']=10;
+        first['b']=20;
+        first['d']=40;
+        first['e']=50;
+        first['f']=60;
+        itlow = first.lower_bound('c');
+        itlow_impl = first_impl.lower_bound('c');
+        REQUIRE(*itlow == *itlow_impl);
+        itup = first.upper_bound('c');
+        itup_impl = first_impl.upper_bound('c');
+        REQUIRE(*itup == *itup_impl);
+        first.erase(itlow,itup);
+        first_impl.erase(itlow_impl,itup_impl);
+        std::map<char,int>::iterator it = first.begin();
+        ft::Map<char,int>::iterator it_impl = first_impl.begin();
+        for(;it != first.end(); ++it, ++it_impl)
+        {
+            REQUIRE(it->first == it_impl->first);
+            REQUIRE(it->second == it_impl->second);
+        }
+    }
+    SECTION("max_size") {
+        REQUIRE(first_impl.max_size() > 0);
+    }
+    SECTION("swap") {
+        ft::Map<char,int> second_impl;
+        second_impl['x'] = 100;
+        second_impl.swap(first_impl);
+        REQUIRE(second_impl['b'] == 30);
+        REQUIRE(first_impl['x'] == 100);
+    }
+    SECTION("value_comp") {
+        std::pair<char,int> highest = *first.rbegin();
+        std::pair<char,int> highest_impl = *first_impl.rbegin();
+        std::map<char,int>::iterator it = first.begin();
+        ft::Map<char,int>::iterator it_impl = first_impl.begin();
+        REQUIRE(first.value_comp()(*it, highest) == first_impl.value_comp()(*it_impl, highest_impl));
+    }
+    SECTION("relational operators")
+    {
+        ft::Map<char,int> second_impl;
+        second_impl['a'] = 100;
+        second_impl['z'] = 1000;
+        REQUIRE_FALSE(first_impl == second_impl);
+        REQUIRE(first_impl != second_impl);
+        REQUIRE(first_impl < second_impl);
+        REQUIRE(first_impl <= second_impl);
+        REQUIRE_FALSE(first_impl > second_impl);
+        REQUIRE_FALSE(first_impl >= second_impl);
+    }
+    SECTION("swap non-member overloads") {
+        ft::Map<char,int> second_impl;
+        second_impl['x'] = 100;
+        ft::swap(first_impl, second_impl);
+        REQUIRE(second_impl['b'] == 30);
+        REQUIRE(first_impl['x'] == 100);
+    }
 }

@@ -11,7 +11,7 @@ namespace ft
         typedef ft::Vector_iterator<T>      iterator;
         typedef T*                          pointer;
         typedef ft::Vector_iterator<T>      _Self;
-        typedef int difference_type;
+        typedef int                         difference_type;
         
         Vector_iterator<T>() : _arr(0) {}
         Vector_iterator<T>(const iterator & it) {
@@ -83,10 +83,10 @@ namespace ft
 
     template<class T>
     struct Vector_reverse_iterator {
-        typedef ft::Vector_reverse_iterator<T>    iterator;
-        typedef T*                              pointer;
-        typedef ft::Vector_reverse_iterator<T>    _Self;
-        typedef int                             difference_type;
+        typedef ft::Vector_reverse_iterator<T>      iterator;
+        typedef T*                                  pointer;
+        typedef ft::Vector_reverse_iterator<T>      _Self;
+        typedef int                                 difference_type;
 
         Vector_reverse_iterator<T>() : _arr(0) {}
         Vector_reverse_iterator<T>(const iterator & it) {
@@ -225,6 +225,76 @@ namespace ft
 
     };
 
+
+    template<class T>
+    struct Vector_const_reverse_iterator {
+        typedef ft::Vector_const_reverse_iterator<T>    iterator;
+        typedef T*                                      pointer;
+        typedef ft::Vector_const_reverse_iterator<T>    _Self;
+        typedef int                                     difference_type;
+        
+        Vector_const_reverse_iterator<T>() : _arr(0) {}
+        Vector_const_reverse_iterator<T>(const iterator & it) {
+            this->_arr = it._arr;
+        }
+        explicit Vector_const_reverse_iterator<T>(pointer p) {
+            this->_arr = p;
+        }
+        ~Vector_const_reverse_iterator() {}
+        Vector_const_reverse_iterator& operator= (const Vector_const_reverse_iterator& x) {
+            this->_arr = x._arr;
+            return *this;
+        }
+        bool operator==(const Vector_const_reverse_iterator & other) const {
+          return this->_arr == other._arr;
+        }
+        bool operator!=(const Vector_const_reverse_iterator & other) const {
+          return this->_arr != other._arr;
+        }
+        iterator operator+(int n) {
+            iterator ret(_arr);
+            for (int i = 0; i < n; ++i)
+                ++ret;
+            return (ret);
+        }
+        difference_type operator-(const Vector_const_reverse_iterator & other) {
+            return (_arr - other._arr);
+        }
+        iterator operator-(int n) {
+            iterator ret(_arr);
+            for (int i = 0; i < n; ++i)
+                --ret;
+            return (ret);
+        }
+        T & operator*() const { 
+            return *_arr;
+        }
+        T * operator->() const {
+            return _arr;
+        }
+        _Self & operator++() { 
+          _arr++;
+          return *this;
+        }
+        _Self operator++(int) { 
+          _Self __tmp = *this;
+          _arr++;
+          return __tmp;
+        }
+        _Self & operator--() { 
+          _arr--;
+          return *this;
+        }
+        _Self operator--(int) { 
+          _Self __tmp = *this;
+          _arr--;
+          return __tmp;
+        }
+
+        pointer _arr;
+
+    };
+
     template<typename T, typename _Alloc = std::allocator<T> >
     class Vector {
     public:
@@ -237,7 +307,7 @@ namespace ft
         typedef ft::Vector_iterator<T>              iterator;
         typedef ft::Vector_const_iterator<T>        const_iterator;
         typedef ft::Vector_reverse_iterator<T>      reverse_iterator;
-        /* typedef ft::Vector_const_reverse_iterator<T>        const_reverse_iterator; */
+        typedef ft::Vector_const_reverse_iterator<T> const_reverse_iterator;
         typedef std::ptrdiff_t                      difference_type;
         typedef size_t                              size_type;
 
@@ -493,12 +563,14 @@ namespace ft
       }
       return true;
     }
+
     template <class T, class Alloc>
     bool operator== (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
         if (lhs.size() != rhs.size())
             return false;
         return equal(lhs.begin(), lhs.end(), rhs.begin());
     }
+
     template <class InputIterator1, class InputIterator2>
     bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
                                     InputIterator2 first2, InputIterator2 last2)
@@ -511,22 +583,26 @@ namespace ft
       }
       return (first2!=last2);
     }
+
     template <class T, class Alloc>
     bool operator!= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
         if (lhs == rhs)
             return false;
         return true;
     }
+
     template <class T, class Alloc>
     bool operator< (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
         return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
     }
+
     template <class T, class Alloc>
     bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
         if (lhs < rhs || lhs == rhs)
             return true;
         return false;
     }
+
     template <class T, class Alloc>
     bool operator> (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
         if (lhs < rhs)
@@ -535,12 +611,14 @@ namespace ft
             return false;
         return true;
     }
+    
     template <class T, class Alloc>
     bool operator>= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
         if (!(lhs < rhs))
             return true;
         return false;
     }
+
     template <class T, class Alloc>
     void swap (Vector<T,Alloc>& x, Vector<T,Alloc>& y) {
         Vector<T> tmp = x;
