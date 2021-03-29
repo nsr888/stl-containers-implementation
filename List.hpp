@@ -311,6 +311,11 @@ namespace ft
 
     template<typename T, typename _Alloc = std::allocator<T> >
     class List {
+    private:
+        typedef ft::List_node<T>                    node_t;
+        typedef typename _Alloc::template rebind<List_node<T> >::other
+            node_allocator;
+
     public:
         typedef T                                   value_type;
         typedef _Alloc                              allocator_type;
@@ -324,9 +329,6 @@ namespace ft
         typedef ft::List_reverse_const_iterator<T>  const_reverse_iterator;
         typedef std::ptrdiff_t                      difference_type;
         typedef size_t                              size_type;
-        typedef ft::List_node<T>                    node_t;
-        typedef typename _Alloc::template rebind<List_node<T> >::other
-            node_allocator;
 
 
         List<T>() {
@@ -534,14 +536,19 @@ namespace ft
                 this->_transfer(position, first, last);
             }
         }
+
+    private:
         void _transfer(iterator position, iterator first, iterator last)
         { 
             position._node->_transfer(first._node, last._node); 
         }
+
+    public:
         void swap(List & x)
         {
             List_node<T>::swap(*this->_node, *x._node);
         }
+
         void resize(size_t new_size)
         {
             iterator i = _resize_pos(new_size);
@@ -557,6 +564,7 @@ namespace ft
             else
                 erase(i, end());
         }
+
         void resize(size_t new_size, T x)
         {
             iterator i = _resize_pos(new_size);
@@ -565,6 +573,7 @@ namespace ft
             else
                 erase(i, end());
         }
+
         void clear()
         {
             node_t* current = this->_node->_next;
@@ -577,6 +586,7 @@ namespace ft
             }
             this->_node->_next = this->_node->_prev = this->_node;
         }
+
         void remove(const T & value)
         {
             List<T> to_destroy;
@@ -593,6 +603,7 @@ namespace ft
                 first = next;
             }
         }
+
         template<typename Predicate>
         void remove_if(Predicate pred)
         {
@@ -610,6 +621,7 @@ namespace ft
                 first = next;
             }
         }
+
         void merge(List & x)
         {
             if (this != &x)
@@ -634,6 +646,7 @@ namespace ft
                     _transfer(last1, first2, last2);
             }
         }
+
         template <class Compare>
         void merge(List & x, Compare comp)
         {
@@ -659,6 +672,7 @@ namespace ft
                     _transfer(last1, first2, last2);
             }
         }
+
         void sort()
         {
             // Do nothing if the list has length 0 or 1.
@@ -688,6 +702,7 @@ namespace ft
                 }
             }
         }
+
         template <class Compare>
         void sort (Compare comp)
         {
@@ -718,6 +733,7 @@ namespace ft
                 }
             }
         }
+
         void unique()
         {
             int i = 0;
@@ -735,6 +751,7 @@ namespace ft
             }
             to_destroy.clear();
         }
+
         template<typename BinaryPredicate>
         void unique(BinaryPredicate binary_pred)
         {
@@ -753,6 +770,7 @@ namespace ft
             }
             to_destroy.clear();
         }
+
         void reverse()
         {
             List<T> reversed;
