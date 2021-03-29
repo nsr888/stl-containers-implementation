@@ -734,6 +734,7 @@ namespace ft
                 h = iterator(h._node->_next);
                 i++;
             }
+            to_destroy.clear();
         }
         template<typename BinaryPredicate>
         void unique(BinaryPredicate binary_pred)
@@ -751,6 +752,7 @@ namespace ft
                 h = iterator(h._node->_next);
                 i++;
             }
+            to_destroy.clear();
         }
         void reverse()
         {

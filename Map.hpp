@@ -860,11 +860,12 @@ namespace ft
             tmp.clear();
         }
 
-        void 
-        display() 
-        {
-            _print_tree(this->_root, "", false);
-        };
+        /* Debugging */
+        /* void */ 
+        /* display() */ 
+        /* { */
+        /*     _print_tree(this->_root, "", false); */
+        /* }; */
 
 
     private:
