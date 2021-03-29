@@ -42,7 +42,7 @@ namespace ft
             this->_prev = other._prev;
             return *this;
         }
-        /* insert this node between */
+        /* insert this node between position and position->prev */
         void _hook(List_node* const __position) {
             this->_next = __position;
             this->_prev = __position->_prev;
@@ -610,7 +610,6 @@ namespace ft
                 first = next;
             }
         }
-        /* rewhrite */
         void merge(List & x)
         {
             if (this != &x)
@@ -781,7 +780,7 @@ namespace ft
             iterator last = end();
             *last._node->_data = this->size();
         }
-        // Erases element at position given.
+        // Erases element at position given
         void _erase(iterator __position) {
             __position._node->_unhook();
             _node_alloc.destroy(__position._node);
